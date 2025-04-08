@@ -19,10 +19,10 @@
 #define U2HTS_LOG_LEVEL_INFO 2
 #define U2HTS_LOG_LEVEL_DEBUG 3
 
-#define U2HTS_IRQ_TYPE_FALLING 0
-#define U2HTS_IRQ_TYPE_RISING 1
-#define U2HTS_IRQ_TYPE_LOW 2
-#define U2HTS_IRQ_TYPE_HIGH 3
+#define U2HTS_IRQ_TYPE_FALLING 1
+#define U2HTS_IRQ_TYPE_RISING 2
+#define U2HTS_IRQ_TYPE_LOW 3
+#define U2HTS_IRQ_TYPE_HIGH 4
 
 #if U2HTS_LOG_LEVEL >= U2HTS_LOG_LEVEL_ERROR
 #define U2HTS_LOG_ERROR(...) \
@@ -82,13 +82,11 @@
 #define U2HTS_UNUSED(x) (void)(x)
 
 #define U2HTS_HID_TP_REPORT_ID 1
+#define U2HTS_HID_TP_MAX_COUNT_ID 2
 
 #ifdef CFG_TUSB_MCU
 #define U2HTS_PHYSICAL_MAX_X 2048
 #define U2HTS_PHYSICAL_MAX_Y 2048
-
-#define U2HTS_HID_TP_MAX_COUNT_ID 2
-#define U2HTS_HID_TP_MS_THQA_CERT_ID 3
 
 #define U2HTS_HID_TP_DESC                                                     \
   HID_USAGE(0x22), HID_COLLECTION(HID_COLLECTION_LOGICAL), HID_USAGE(0x42),   \
@@ -120,10 +118,9 @@
 #define U2HTS_HID_TP_MAX_COUNT_DESC \
   HID_USAGE(0x55), HID_FEATURE(HID_DATA | HID_VARIABLE | HID_ABSOLUTE)
 
-#define U2HTS_HID_TP_MS_THQA_CERT_DESC                                     \
-  HID_USAGE_PAGE_N(0XFF00, 2), HID_USAGE(0xc5), HID_LOGICAL_MAX_N(255, 2), \
-      HID_REPORT_COUNT_N(256, 3),                                          \
-      HID_FEATURE(HID_DATA | HID_VARIABLE | HID_ABSOLUTE)
+#else
+uint8_t u2hts_get_max_tps();
+bool u2hts_get_usb_status();
 #endif
 
 #define U2HTS_TOUCH_CONTROLLER(controller)                                  \
@@ -183,24 +180,26 @@ typedef struct {
   u2hts_touch_controller_operations *operations;
 } u2hts_touch_controller;
 
-#ifdef PICO_RP2040
-void u2hts_rp2040_irq_cb(uint gpio, uint32_t event_mask);
-#endif
-
 void u2hts_init(u2hts_config *cfg);
 void u2hts_main();
 void u2hts_i2c_write(uint8_t slave_addr, uint32_t reg, size_t reg_size,
                      void *data, size_t data_size);
 void u2hts_i2c_read(uint8_t slave_addr, uint32_t reg, size_t reg_size,
                     void *data, size_t data_size);
+
+#ifndef U2HTS_POLLING
 void u2hts_tpint_set(bool value);
+#ifdef PICO_RP2040
+void u2hts_rp2040_irq_cb(uint gpio, uint32_t event_mask);
+#endif
+void u2hts_ts_irq_set(bool enable);
+void u2hts_ts_irq_status_set(bool status);
 void u2hts_ts_irq_setup(u2hts_touch_controller *ctrler);
+#endif
 bool u2hts_i2c_detect_slave(uint8_t addr);
 void u2hts_tprst_set(bool value);
 void u2hts_delay_ms(uint32_t ms);
 void u2hts_delay_us(uint32_t us);
-void u2hts_ts_irq_set(bool enable);
-void u2hts_ts_irq_status_set(bool status);
 bool u2hts_usb_init();
 uint16_t u2hts_get_scan_time();
 bool u2hts_usb_report(u2hts_hid_report *report, uint8_t report_id);
@@ -266,8 +265,7 @@ inline static void u2hts_save_config(u2hts_config *cfg) {
   u2hts_config_mask.x_y_swap = cfg->x_y_swap;
   u2hts_config_mask.x_invert = cfg->x_invert;
   u2hts_config_mask.y_invert = cfg->y_invert;
-  uint16_t save = u2hts_config_mask.mask;
-  printf("%d", save);
+
   u2hts_write_config(u2hts_config_mask.mask);
 }
 
@@ -304,7 +302,6 @@ inline static bool u2hts_config_exists() {
 
 #ifdef U2HTS_ENABLE_BUTTON
 bool u2hts_read_button();
-
 #endif
 
 #endif

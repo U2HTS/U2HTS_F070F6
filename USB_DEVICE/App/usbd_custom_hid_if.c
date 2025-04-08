@@ -423,12 +423,6 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x85, 0x02,        //   (GLOBAL) REPORT_ID          0x02 (2)  
       0x09, 0x55,        //   (LOCAL)  USAGE              0x000D0055 Contact Count Maximum (Static Value)  
       0xB1, 0x02,        //   (MAIN)   FEATURE            0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
-      0x85, 0x03,        //   (GLOBAL) REPORT_ID          0x03 (3)  
-      0x06, 0x00, 0xFF,  //   (GLOBAL) USAGE_PAGE         0xFF, 0x00 Vendor-defined 
-      0x09, 0xC5,        //   (LOCAL)  USAGE              0xFF, 0x0000C5 <-- Warning: Undocumented usage (document it by inserting 00C5 into file FF00.conf)
-      0x26, 0xFF, 0x00,  //   (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)  
-      0x97, 0x00, 0x01, 0x00, 0x00, //   (GLOBAL) REPORT_COUNT       0x00000100 (256) Number of fields  <-- Info: Consider replacing 97 00010000 with 96 0001
-      0xB1, 0x02,        //   (MAIN)   FEATURE            0x00000002 (256 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0xC0               // (MAIN)   END_COLLECTION     Application  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00001001,EXP=-4)
 };
 

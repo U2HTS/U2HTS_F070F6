@@ -196,10 +196,17 @@ inline void u2hts_ts_irq_setup(u2hts_touch_controller *ctrler) {
 
 inline bool u2hts_usb_report(u2hts_hid_report *report, uint8_t report_id) {
   UNUSED(report_id);
-  return USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
-                                    sizeof(u2hts_hid_report));
+  return (USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
+                                     sizeof(u2hts_hid_report)) == USBD_OK);
 }
 
+inline bool u2hts_get_usb_status() {
+  return (((USBD_CUSTOM_HID_HandleTypeDef *)hUsbDeviceFS.pClassData)->state ==
+          CUSTOM_HID_IDLE);
+}
+
+#ifndef U2HTS_POLLING
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   u2hts_ts_irq_status_set((GPIO_Pin == TP_INT_Pin));
 }
+#endif
