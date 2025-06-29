@@ -20,6 +20,8 @@
 
 #define U2HTS_LOG_LEVEL -1  // No stdio attached
 
+// #define U2HTS_POLLING
+
 inline static void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
 inline static void u2hts_delay_us(uint32_t us) {
   __IO uint32_t currentTicks = SysTick->VAL;
@@ -59,7 +61,7 @@ inline static uint16_t u2hts_get_scan_time() { return (uint16_t)HAL_GetTick(); }
 
 inline static void u2hts_led_set(bool on) {
   // low level is on
-  HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
+  HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, on);
 }
 
 #define U2HTS_CONFIG_STORAGE_OFFSET 0x08007C00UL  // last page

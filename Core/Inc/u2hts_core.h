@@ -77,7 +77,11 @@
 
 #define U2HTS_MAX_TPS 10
 
-#define U2HTS_LOGICAL_MAX 2048
+#define U2HTS_TPS_RELEASE_TIMEOUT 10 * 1000  // 10 ms
+#define U2HTS_DEFAULT_TP_WIDTH 0x30
+#define U2HTS_DEFAULT_TP_HEIGHT 0x30
+#define U2HTS_DEFAULT_TP_PRESSURE 0x30
+#define U2HTS_LOGICAL_MAX 4096
 
 #define U2HTS_UNUSED(x) (void)(x)
 
@@ -85,8 +89,8 @@
 #define U2HTS_HID_TP_MAX_COUNT_ID 2
 
 #ifdef CFG_TUSB_MCU
-#define U2HTS_PHYSICAL_MAX_X 2048
-#define U2HTS_PHYSICAL_MAX_Y 2048
+#define U2HTS_PHYSICAL_MAX_X 4096
+#define U2HTS_PHYSICAL_MAX_Y 4096
 
 #define U2HTS_HID_TP_DESC                                                     \
   HID_USAGE(0x22), HID_COLLECTION(HID_COLLECTION_LOGICAL), HID_USAGE(0x42),   \
@@ -203,7 +207,7 @@ void u2hts_delay_us(uint32_t us);
 bool u2hts_usb_init();
 uint16_t u2hts_get_scan_time();
 bool u2hts_usb_report(u2hts_hid_report *report, uint8_t report_id);
-
+void u2hts_apply_config_to_tp(u2hts_config *cfg, u2hts_tp *tp);
 #ifdef U2HTS_ENABLE_LED
 typedef struct {
   bool state;

@@ -113,10 +113,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap  <-- Error: PHYSICAL_MAXIMUM is undefined
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -144,10 +144,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -175,10 +175,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -206,10 +206,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -237,10 +237,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -268,10 +268,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -299,10 +299,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -330,10 +330,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -361,10 +361,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
@@ -392,10 +392,10 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
       0x95, 0x01,        //     (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x05, 0x01,        //     (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page 
-      0x26, 0x00, 0x08,  //     (GLOBAL) LOGICAL_MAXIMUM    0x0800 (2048)  
+      0x26, 0x00, 0x10,  //     (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)  
       0x75, 0x10,        //     (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field  
       0x09, 0x30,        //     (LOCAL)  USAGE              0x00010030 X (Dynamic Value)  
-      0x46, 0x00, 0x08,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x0800 (2048)  
+      0x46, 0x00, 0x10,  //     (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
       0x09, 0x31,        //     (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)  
       0x81, 0x02,        //     (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 

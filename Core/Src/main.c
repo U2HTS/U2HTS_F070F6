@@ -95,7 +95,7 @@ int main(void) {
   MX_GPIO_Init();
   // MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  u2hts_config cfg = {.controller = (uint8_t *)"Goodix",
+  u2hts_config cfg = {.controller = (uint8_t *)"gt9xx",
                       .x_invert = false,
                       .y_invert = false,
                       .x_y_swap = false};
@@ -228,7 +228,7 @@ static void MX_GPIO_Init(void) {
   /*Configure GPIO pin : USR_KEY_Pin */
   GPIO_InitStruct.Pin = USR_KEY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(USR_KEY_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : TP_SDA_Pin */
