@@ -1,0 +1,3 @@
+[submodule "Core/Src/touch-controllers"]
+	path = Core/Src/touch-controllers
+	url = https://github.com/CNflysky/u2hts_touch_controllers.git
