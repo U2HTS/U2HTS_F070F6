@@ -5,7 +5,7 @@
   All rights reserved.
 */
 
-#include "u2hts_stm32f070f6.h"
+#include "u2hts_f070f6.h"
 
 #include "u2hts_core.h"
 
@@ -106,65 +106,32 @@ static uint8_t i2c_read_byte(bool ack) {
   return buf;
 }
 
-void u2hts_i2c_write(uint8_t slave_addr, uint32_t reg, size_t reg_size,
-                     void *data, size_t data_size) {
-  uint8_t tx_buf[reg_size + data_size];
-  uint32_t reg_be = 0x00;
-  switch (reg_size) {
-    case sizeof(uint16_t):
-      reg_be = U2HTS_SWAP16(reg);
-      break;
-    case sizeof(uint32_t):
-      reg_be = U2HTS_SWAP32(reg);
-      break;
-    default:
-      reg_be = reg;
-      break;
-  }
-  memcpy(tx_buf, &reg_be, reg_size);
-  memcpy(tx_buf + reg_size, data, data_size);
+bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len) {
+  uint8_t *buf_ptr = buf;
+  bool ret = false;
   i2c_start();
   i2c_write_byte(slave_addr << 1 | 0);
-  i2c_wait_ack();
-  for (uint32_t i = 0; i < sizeof(tx_buf); i++) {
-    i2c_write_byte(tx_buf[i]);
-    i2c_wait_ack();
+  ret = i2c_wait_ack();
+  if (!ret) return ret;
+  for (uint32_t i = 0; i < len; i++) {
+    i2c_write_byte(buf_ptr[i]);
+    ret = i2c_wait_ack();
+    if (!ret) return ret;
   }
   i2c_stop();
+  return ret;
 }
 
-void u2hts_i2c_read(uint8_t slave_addr, uint32_t reg, size_t reg_size,
-                    void *data, size_t data_size) {
-  uint32_t reg_be = 0x00;
-  switch (reg_size) {
-    case sizeof(uint16_t):
-      reg_be = U2HTS_SWAP16(reg);
-      break;
-    case sizeof(uint32_t):
-      reg_be = U2HTS_SWAP32(reg);
-      break;
-    default:
-      reg_be = reg;
-      break;
-  }
-  uint8_t *reg_be_ptr = (uint8_t *)&reg_be;
-  uint8_t *data_ptr = (uint8_t *)data;
-
-  i2c_start();
-  i2c_write_byte(slave_addr << 1 | 0);
-  i2c_wait_ack();
-
-  for (uint8_t i = 0; i < reg_size; i++) {
-    i2c_write_byte(reg_be_ptr[i]);
-    i2c_wait_ack();
-  }
-
+bool u2hts_i2c_read(uint8_t slave_addr, void *buf, size_t len) {
+  uint8_t *buf_ptr = buf;
+  bool ret = false;
   i2c_start();
   i2c_write_byte((slave_addr << 1) | 1);
-  i2c_wait_ack();
-  for (uint32_t i = 0; i < data_size; i++)
-    data_ptr[i] = i2c_read_byte((i != data_size - 1));
+  ret = i2c_wait_ack();
+  if (!ret) return ret;
+  for (uint32_t i = 0; i < len; i++) buf_ptr[i] = i2c_read_byte((i != len - 1));
   i2c_stop();
+  return ret;
 }
 
 inline bool u2hts_i2c_detect_slave(uint8_t addr) {
@@ -175,26 +142,26 @@ inline bool u2hts_i2c_detect_slave(uint8_t addr) {
   return ret;
 }
 
-inline void u2hts_ts_irq_setup(u2hts_touch_controller *ctrler) {
+inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
-  uint32_t irq_flag = 0x00;
-  switch (ctrler->irq_flag) {
+  uint32_t real_irq_flag = 0x00;
+  switch (irq_flag) {
     case U2HTS_IRQ_TYPE_HIGH:
     case U2HTS_IRQ_TYPE_RISING:
-      irq_flag = GPIO_MODE_IT_RISING;
+      real_irq_flag = GPIO_MODE_IT_RISING;
       break;
     case U2HTS_IRQ_TYPE_FALLING:
     case U2HTS_IRQ_TYPE_LOW:
     default:
-      irq_flag = GPIO_MODE_IT_FALLING;
+      real_irq_flag = GPIO_MODE_IT_FALLING;
       break;
   }
   GPIO_InitTypeDef gpio = {
-      .Mode = irq_flag, .Pin = TP_INT_Pin, .Pull = GPIO_PULLUP};
+      .Mode = real_irq_flag, .Pin = TP_INT_Pin, .Pull = GPIO_PULLUP};
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline bool u2hts_usb_report(u2hts_hid_report *report, uint8_t report_id) {
+inline bool u2hts_usb_report(void *report, uint8_t report_id) {
   UNUSED(report_id);
   return (USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
                                      sizeof(u2hts_hid_report)) == USBD_OK);

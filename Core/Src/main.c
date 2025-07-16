@@ -95,7 +95,7 @@ int main(void) {
   MX_GPIO_Init();
   // MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  u2hts_config cfg = {.controller = (uint8_t *)"auto",
+  u2hts_config cfg = {.controller = "auto",
                       .x_invert = false,
                       .y_invert = false,
                       .x_y_swap = false};

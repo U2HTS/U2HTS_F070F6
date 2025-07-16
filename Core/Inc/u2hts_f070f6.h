@@ -22,8 +22,6 @@
 
 // #define U2HTS_POLLING
 
-#define U2HTS_POLLING_USB_TRANSFER_TIME 1
-
 inline static void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
 inline static void u2hts_delay_us(uint32_t us) {
   __IO uint32_t currentTicks = SysTick->VAL;
