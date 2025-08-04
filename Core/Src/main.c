@@ -98,7 +98,8 @@ int main(void) {
   u2hts_config cfg = {.controller = "auto",
                       .x_invert = false,
                       .y_invert = false,
-                      .x_y_swap = false};
+                      .x_y_swap = false,
+                      .polling_mode = false};
 
   u2hts_init(&cfg);
   /* USER CODE END 2 */

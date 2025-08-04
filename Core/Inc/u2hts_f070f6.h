@@ -20,8 +20,6 @@
 
 #define U2HTS_LOG_LEVEL -1  // No stdio attached
 
-// #define U2HTS_POLLING
-
 inline static void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
 inline static void u2hts_delay_us(uint32_t us) {
   __IO uint32_t currentTicks = SysTick->VAL;
@@ -87,7 +85,7 @@ inline static void u2hts_ts_irq_set(bool enable) {
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
 
-inline static bool u2hts_read_button() {
+inline static bool u2hts_key_read() {
   // default low
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }

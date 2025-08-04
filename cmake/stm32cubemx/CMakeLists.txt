@@ -24,8 +24,9 @@ target_include_directories(stm32cubemx INTERFACE
     ../../Drivers/CMSIS/Include
 )
 
-file(GLOB_RECURSE SOURCES "../../Core/Src/touch-controllers/*.c")
-set(SOURCES ${SOURCES})
+get_filename_component(TOUCH_CONTROLLER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/touch-controllers" ABSOLUTE)
+file(GLOB_RECURSE SOURCES "${TOUCH_CONTROLLER_DIR}/*.c")
+list(REMOVE_ITEM SOURCES "${TOUCH_CONTROLLER_DIR}/controller_template.c")
 
 target_sources(stm32cubemx INTERFACE
     ../../Core/Src/main.c
