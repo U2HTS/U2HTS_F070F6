@@ -17,7 +17,7 @@ make -j16
 按下`用户按键`(靠近Type-C口的那个按键)，再接上Type-C线缆。
 ```bash
 sudo apt install dfu-util
-sudo ./flash-dfu.sh
+sudo ./flash.sh dfu build/U2HTS_F070F6.bin
 ```
 
 # 配置
