@@ -18,7 +18,7 @@ make -j
 Press `USR button` (close to USB-C port), then plug on the USB-C cable.
 ```bash
 sudo apt install dfu-util
-sudo ./flash.sh dfu build/U2HTS_F070F6.elf
+sudo ./flash.sh dfu build/U2HTS_F070F6.bin
 ```
 
 # Config
