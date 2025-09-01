@@ -22,9 +22,9 @@ sudo ./flash.sh dfu build/U2HTS_F070F6.bin
 ```
 
 # Config
-[main.c](./Core/Src/main.c), line 103:
+[main.c](./Core/Src/main.c):
 ```c
-  u2hts_config cfg = {.controller = (uint8_t *)"gt9xx",
+  u2hts_config cfg = {.controller = "auto",
                       .x_invert = false,
                       .y_invert = false,
                       .x_y_swap = false};
