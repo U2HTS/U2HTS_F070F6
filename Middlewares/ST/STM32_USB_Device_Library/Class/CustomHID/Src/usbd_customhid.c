@@ -155,7 +155,7 @@ __ALIGN_BEGIN static uint8_t
         0x00, /*nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse*/
         0,    /*iInterface: Index of string descriptor*/
         /******************** Descriptor of CUSTOM_HID
-           *************************/
+         *************************/
         /* 18 */
         0x09,                       /*bLength: CUSTOM_HID Descriptor size*/
         CUSTOM_HID_DESCRIPTOR_TYPE, /*bDescriptorType: CUSTOM_HID*/
@@ -167,7 +167,7 @@ __ALIGN_BEGIN static uint8_t
         USBD_CUSTOM_HID_REPORT_DESC_SIZE_2BYTES, /*wItemLength: Total length of
                                                     Report descriptor*/
         /******************** Descriptor of Custom HID endpoints
-           ********************/
+         ********************/
         /* 27 */
         0x07,                   /*bLength: Endpoint Descriptor size*/
         USB_DESC_TYPE_ENDPOINT, /*bDescriptorType:*/
@@ -184,7 +184,7 @@ __ALIGN_BEGIN static uint8_t
         0x03,                   /* bmAttributes: Interrupt endpoint */
         CUSTOM_HID_EPOUT_SIZE,  /* wMaxPacketSize: 2 Bytes max  */
         0x00, CUSTOM_HID_FS_BINTERVAL, /* bInterval: Polling Interval */
-        /* 41 */
+                                       /* 41 */
 };
 
 /* USB CUSTOM_HID device HS Configuration Descriptor */
@@ -213,7 +213,7 @@ __ALIGN_BEGIN static uint8_t
         0x00, /*nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse*/
         0,    /*iInterface: Index of string descriptor*/
         /******************** Descriptor of CUSTOM_HID
-           *************************/
+         *************************/
         /* 18 */
         0x09,                       /*bLength: CUSTOM_HID Descriptor size*/
         CUSTOM_HID_DESCRIPTOR_TYPE, /*bDescriptorType: CUSTOM_HID*/
@@ -225,7 +225,7 @@ __ALIGN_BEGIN static uint8_t
         USBD_CUSTOM_HID_REPORT_DESC_SIZE_2BYTES, /*wItemLength: Total length of
                                                     Report descriptor*/
         /******************** Descriptor of Custom HID endpoints
-           ********************/
+         ********************/
         /* 27 */
         0x07,                   /*bLength: Endpoint Descriptor size*/
         USB_DESC_TYPE_ENDPOINT, /*bDescriptorType:*/
@@ -242,7 +242,7 @@ __ALIGN_BEGIN static uint8_t
         0x03,                   /* bmAttributes: Interrupt endpoint */
         CUSTOM_HID_EPOUT_SIZE,  /* wMaxPacketSize: 2 Bytes max  */
         0x00, CUSTOM_HID_HS_BINTERVAL, /* bInterval: Polling Interval */
-        /* 41 */
+                                       /* 41 */
 };
 
 /* USB CUSTOM_HID device Other Speed Configuration Descriptor */
@@ -271,7 +271,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc
         0x00, /*nInterfaceProtocol : 0=none, 1=keyboard, 2=mouse*/
         0,    /*iInterface: Index of string descriptor*/
         /******************** Descriptor of CUSTOM_HID
-           *************************/
+         *************************/
         /* 18 */
         0x09,                       /*bLength: CUSTOM_HID Descriptor size*/
         CUSTOM_HID_DESCRIPTOR_TYPE, /*bDescriptorType: CUSTOM_HID*/
@@ -283,7 +283,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc
         USBD_CUSTOM_HID_REPORT_DESC_SIZE_2BYTES, /*wItemLength: Total length of
                                                     Report descriptor*/
         /******************** Descriptor of Custom HID endpoints
-           ********************/
+         ********************/
         /* 27 */
         0x07,                   /*bLength: Endpoint Descriptor size*/
         USB_DESC_TYPE_ENDPOINT, /*bDescriptorType:*/
@@ -300,7 +300,7 @@ __ALIGN_BEGIN static uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc
         0x03,                   /* bmAttributes: Interrupt endpoint */
         CUSTOM_HID_EPOUT_SIZE,  /* wMaxPacketSize: 2 Bytes max  */
         0x00, CUSTOM_HID_FS_BINTERVAL, /* bInterval: Polling Interval */
-        /* 41 */
+                                       /* 41 */
 };
 
 /* USB CUSTOM_HID device Configuration Descriptor */

@@ -106,7 +106,7 @@ static uint8_t i2c_read_byte(bool ack) {
   return buf;
 }
 
-bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len) {
+bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len, bool stop) {
   uint8_t *buf_ptr = buf;
   bool ret = false;
   i2c_start();
@@ -118,7 +118,7 @@ bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len) {
     ret = i2c_wait_ack();
     if (!ret) return ret;
   }
-  i2c_stop();
+  if (stop) i2c_stop();
   return ret;
 }
 
@@ -161,15 +161,29 @@ inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline bool u2hts_usb_report(void *report, uint8_t report_id) {
-  UNUSED(report_id);
-  return (USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
-                                     sizeof(u2hts_hid_report)) == USBD_OK);
+inline void u2hts_usb_report(void *report, uint8_t report_id) {
+  uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
+  report_buf[0] = report_id;
+  memcpy(report_buf, (uint8_t *)report + 1, sizeof(u2hts_hid_report));
+  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
+                             sizeof(u2hts_hid_report));
 }
 
 inline bool u2hts_get_usb_status() {
   return (((USBD_CUSTOM_HID_HandleTypeDef *)hUsbDeviceFS.pClassData)->state ==
           CUSTOM_HID_IDLE);
+}
+
+inline void u2hts_tpint_set_mode(bool mode, bool pull) {
+  GPIO_InitTypeDef gpio = {.Pin = TP_INT_Pin,
+                           .Mode = mode ? GPIO_MODE_OUTPUT_PP : GPIO_MODE_INPUT,
+                           .Pull = pull ? GPIO_PULLUP : GPIO_PULLDOWN,
+                           .Speed = GPIO_SPEED_FREQ_MEDIUM};
+  HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
+}
+
+inline bool u2hts_tpint_get() {
+  return HAL_GPIO_ReadPin(TP_INT_GPIO_Port, TP_INT_Pin);
 }
 
 #ifndef U2HTS_POLLING
