@@ -4,14 +4,23 @@
 # 构建
 ```bash
 sudo apt install gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi make cmake
-git clone https://github.com/CNflysky/U2HTS_F070F6.git --depth 1
+git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1
 cd U2HTS_F070F6
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
 make -j16
 ```
-*注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在`Core/Src/touch-controllers`目录下的驱动中，启用你想要集成的驱动。  
+*注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在CMakeLists.txt中选择你需要的驱动。  
+```cmake
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/gt9xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/ft54x6.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_common.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_f11.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/cst8xx.c
+)
+```
 
 # 刷写
 按下`用户按键`(靠近Type-C口的那个按键)，再接上Type-C线缆。

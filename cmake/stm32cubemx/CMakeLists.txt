@@ -24,10 +24,6 @@ target_include_directories(stm32cubemx INTERFACE
     ../../Drivers/CMSIS/Include
 )
 
-get_filename_component(TOUCH_CONTROLLER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/touch-controllers" ABSOLUTE)
-file(GLOB_RECURSE TOUCH_CONTROLLERS "${TOUCH_CONTROLLER_DIR}/*.c")
-list(REMOVE_ITEM TOUCH_CONTROLLERS "${TOUCH_CONTROLLER_DIR}/controller_template.c")
-
 target_sources(stm32cubemx INTERFACE
     ../../Core/Src/main.c
     ../../Core/Src/u2hts_core.c
@@ -35,7 +31,6 @@ target_sources(stm32cubemx INTERFACE
     ../../Core/Src/stm32f0xx_hal_msp.c
     ../../Core/Src/u2hts_core.c
     ../../Core/Src/u2hts_f070f6.c
-    ${TOUCH_CONTROLLERS}
     ../../USB_DEVICE/App/usb_device.c
     ../../USB_DEVICE/App/usbd_desc.c
     ../../USB_DEVICE/App/usbd_custom_hid_if.c

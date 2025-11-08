@@ -101,7 +101,13 @@ int main(void) {
                       .x_y_swap = false,
                       .polling_mode = false};
 
-  u2hts_init(&cfg);
+  int8_t ret = u2hts_init(&cfg);
+  if (ret < 0)
+#ifdef U2HTS_ENABLE_LED
+    u2hts_led_show_error_code(ret);
+#else
+    while (1);
+#endif
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -271,7 +277,7 @@ void Error_Handler(void) {
  * @param  line: assert_param error line source number
  * @retval None
  */
-void assert_failed(uint8_t *file, uint32_t line) {
+void assert_failed(uint8_t* file, uint32_t line) {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line
      number, ex: printf("Wrong parameters value: file %s on line %d\r\n", file,

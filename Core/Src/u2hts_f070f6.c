@@ -15,7 +15,7 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 #define I2C_SCL(x) HAL_GPIO_WritePin(TP_SCL_NSS_GPIO_Port, TP_SCL_NSS_Pin, x)
 
 #define I2C_SDA_R HAL_GPIO_ReadPin(TP_SDA_GPIO_Port, TP_SDA_Pin)
-#define I2C_SCL_R HAL_GPIO_ReadPin(TP_SCL_NSS_GPIO_Port, TP_SCL_NSS_Pin, x)
+#define I2C_SCL_R HAL_GPIO_ReadPin(TP_SCL_NSS_GPIO_Port, TP_SCL_NSS_Pin)
 
 #define I2C_SDA_I                                                 \
   GPIO_InitTypeDef sda_gpio_in = {.Pin = TP_SDA_Pin,              \
@@ -43,10 +43,19 @@ static void i2c_start() {
 
 void i2c_stop() {
   I2C_SDA(0);
-  I2C_SCL(1);
   u2hts_delay_us(I2C_DELAY / 2);
   I2C_SCL(1);
+  u2hts_delay_us(I2C_DELAY / 2);
   I2C_SDA(1);
+  u2hts_delay_us(I2C_DELAY);
+}
+
+static void i2c_scl_high_wait(void) {
+  I2C_SCL(1);
+  u2hts_delay_us(I2C_DELAY / 2);
+  uint16_t timeout = 0xFFFF;
+  while (!I2C_SCL_R)
+    if (--timeout == 0) break;
 }
 
 // true: ack false: nack
@@ -54,22 +63,24 @@ static void i2c_ack(bool ack) {
   I2C_SCL(0);
   I2C_SDA(!ack);
   u2hts_delay_us(I2C_DELAY);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY);
+  i2c_scl_high_wait();
   I2C_SCL(0);
   I2C_SDA(1);
 }
 
 static bool i2c_wait_ack() {
-  uint8_t timeout = 0;
   I2C_SDA(1);
+  u2hts_delay_us(I2C_DELAY / 2);
   I2C_SCL(1);
+  u2hts_delay_us(I2C_DELAY / 2);
+  uint8_t timeout = 0;
   while (I2C_SDA_R) {
     timeout++;
     if (timeout > 254) {
       i2c_stop();
       return false;
     }
+    u2hts_delay_us(1);
   }
   u2hts_delay_us(I2C_DELAY);
   I2C_SCL(0);
@@ -77,15 +88,14 @@ static bool i2c_wait_ack() {
 }
 
 static void i2c_write_byte(uint8_t byte) {
-  I2C_SCL(0);
   for (uint8_t i = 0; i < 8; i++) {
+    I2C_SCL(0);
     I2C_SDA((byte & 0x80) ? 1 : 0);
     byte <<= 1;
     u2hts_delay_us(I2C_DELAY);
-    I2C_SCL(1);
+    i2c_scl_high_wait();
     u2hts_delay_us(I2C_DELAY);
     I2C_SCL(0);
-    u2hts_delay_us(I2C_DELAY);
   }
   u2hts_delay_us(I2C_DELAY);
 }
@@ -96,18 +106,19 @@ static uint8_t i2c_read_byte(bool ack) {
   for (uint8_t i = 0; i < 8; i++) {
     I2C_SCL(0);
     u2hts_delay_us(I2C_DELAY);
-    I2C_SCL(1);
+    i2c_scl_high_wait();
     buf <<= 1;
     if (I2C_SDA_R) buf++;
     u2hts_delay_us(I2C_DELAY);
+    I2C_SCL(0);
   }
   I2C_SDA_O;
   i2c_ack(ack);
   return buf;
 }
 
-bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len, bool stop) {
-  uint8_t *buf_ptr = buf;
+bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len, bool stop) {
+  uint8_t* buf_ptr = buf;
   bool ret = false;
   i2c_start();
   i2c_write_byte(slave_addr << 1 | 0);
@@ -122,24 +133,55 @@ bool u2hts_i2c_write(uint8_t slave_addr, void *buf, size_t len, bool stop) {
   return ret;
 }
 
-bool u2hts_i2c_read(uint8_t slave_addr, void *buf, size_t len) {
-  uint8_t *buf_ptr = buf;
+bool u2hts_i2c_read(uint8_t slave_addr, void* buf, size_t len) {
+  uint8_t* buf_ptr = buf;
   bool ret = false;
   i2c_start();
   i2c_write_byte((slave_addr << 1) | 1);
   ret = i2c_wait_ack();
   if (!ret) return ret;
   for (uint32_t i = 0; i < len; i++) buf_ptr[i] = i2c_read_byte((i != len - 1));
+
   i2c_stop();
   return ret;
 }
 
-inline bool u2hts_i2c_detect_slave(uint8_t addr) {
-  i2c_start();
-  i2c_write_byte(addr << 1 | 1);
-  bool ret = i2c_wait_ack();
+static void i2c_reset(void) {
+  I2C_SDA(1);
+  I2C_SCL(1);
+  u2hts_delay_us(I2C_DELAY);
+  for (uint8_t i = 0; i < 9; i++) {
+    I2C_SCL(0);
+    u2hts_delay_us(I2C_DELAY);
+    I2C_SCL(1);
+    u2hts_delay_us(I2C_DELAY);
+  }
+
   i2c_stop();
-  return ret;
+}
+
+bool u2hts_i2c_detect_slave(uint8_t addr) {
+  i2c_stop();  // 确保总线空闲
+  u2hts_delay_us(200);
+
+  i2c_reset();
+
+  i2c_start();
+  i2c_write_byte(addr << 1);
+
+  I2C_SDA(1);
+  u2hts_delay_us(I2C_DELAY);
+  I2C_SCL(1);
+  u2hts_delay_us(I2C_DELAY);
+
+  bool ack = !I2C_SDA_R;
+
+  u2hts_delay_us(I2C_DELAY);
+  I2C_SCL(0);
+  i2c_stop();
+  u2hts_delay_us(200);
+
+  return ack;
 }
 
 inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
@@ -156,21 +198,23 @@ inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
       real_irq_flag = GPIO_MODE_IT_FALLING;
       break;
   }
-  GPIO_InitTypeDef gpio = {
-      .Mode = real_irq_flag, .Pin = TP_INT_Pin, .Pull = GPIO_PULLUP};
+  GPIO_InitTypeDef gpio = {.Mode = real_irq_flag,
+                           .Pin = TP_INT_Pin,
+                           .Pull = (real_irq_flag == GPIO_MODE_IT_RISING)
+                                       ? GPIO_PULLDOWN
+                                       : GPIO_PULLUP};
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(void *report, uint8_t report_id) {
-  uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
+inline void u2hts_usb_report(void* report, uint8_t report_id) {
+  static uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
   report_buf[0] = report_id;
-  memcpy(report_buf, (uint8_t *)report + 1, sizeof(u2hts_hid_report));
-  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report,
-                             sizeof(u2hts_hid_report));
+  memcpy(report_buf + 1, report, sizeof(u2hts_hid_report));
+  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, report_buf, sizeof(report_buf));
 }
 
 inline bool u2hts_get_usb_status() {
-  return (((USBD_CUSTOM_HID_HandleTypeDef *)hUsbDeviceFS.pClassData)->state ==
+  return (((USBD_CUSTOM_HID_HandleTypeDef*)hUsbDeviceFS.pClassData)->state ==
           CUSTOM_HID_IDLE);
 }
 

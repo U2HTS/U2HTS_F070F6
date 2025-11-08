@@ -5,14 +5,23 @@
 # Build
 ```bash
 sudo apt install gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi make cmake
-git clone https://github.com/CNflysky/U2HTS_F070F6.git --depth 1
+git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1
 cd U2HTS_F070F6
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
 make -j
 ```
-*Note*: This MCU has limited memories (6 KB RAM / 32 KB Flash), only a small set of touch controller drivers can be intergrated in. Please enable driver you would build into firmware under `Core/Src/touch-controllers`.  
+*Note*: This MCU has limited memories (6 KB RAM / 32 KB Flash), so you would like to disable unused drivers to save memory.  
+```cmake
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/gt9xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/ft54x6.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_common.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_f11.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/cst8xx.c
+)
+```
 
 # Flash
 Press `USR button` (close to USB-C port), then plug on the USB-C cable.

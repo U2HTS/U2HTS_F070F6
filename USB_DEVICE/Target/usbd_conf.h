@@ -73,14 +73,14 @@ extern "C" {
 /*---------- -----------*/
 #define USBD_SELF_POWERED 1
 /*---------- -----------*/
-#define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE 64
+#define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE 300
 /*---------- -----------*/
 #define USBD_CUSTOM_HID_REPORT_DESC_SIZE 691
 #define USBD_CUSTOM_HID_REPORT_DESC_SIZE_2BYTES \
   LOBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE),     \
       HIBYTE(USBD_CUSTOM_HID_REPORT_DESC_SIZE)
 /*---------- -----------*/
-#define CUSTOM_HID_FS_BINTERVAL 0x5
+#define CUSTOM_HID_FS_BINTERVAL 0x1
 
 /****************************************/
 /* #define for FS and HS identification */
