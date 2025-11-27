@@ -5,20 +5,14 @@
   All rights reserved.
 */
 
-#ifndef _U2HTS_STM32F070F6_H_
-#define _U2HTS_STM32F070F6_H_
+#ifndef _U2HTS_F070F6_H_
+#define _U2HTS_F070F6_H_
 
 #include "main.h"
 #include "stdbool.h"
 #include "usbd_customhid.h"
 
-#define U2HTS_ENABLE_LED
-#define U2HTS_ENABLE_PERSISTENT_CONFIG
-#define U2HTS_ENABLE_KEY
-
 #define U2HTS_CONFIG_TIMEOUT 3 * 1000  // 3 s
-
-#define U2HTS_LOG_LEVEL -1  // No stdio attached
 
 inline static void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
 inline static void u2hts_delay_us(uint32_t us) {

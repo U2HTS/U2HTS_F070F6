@@ -99,10 +99,11 @@ int main(void) {
                       .x_invert = false,
                       .y_invert = false,
                       .x_y_swap = false,
+                      .fetch_delay = 0,
                       .polling_mode = false};
 
-  int8_t ret = u2hts_init(&cfg);
-  if (ret < 0)
+  U2HTS_ERROR_CODES ret = u2hts_init(&cfg);
+  if (ret)
 #ifdef U2HTS_ENABLE_LED
     u2hts_led_show_error_code(ret);
 #else

@@ -57,6 +57,10 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+    -DU2HTS_LOG_LEVEL=-1
+    -DU2HTS_ENABLE_LED
+    -DU2HTS_ENABLE_PERSISTENT_CONFIG
+    -DU2HTS_ENABLE_KEY
     # Add user defined symbols
 )
 
@@ -74,4 +78,5 @@ add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${HEX_FILE}
         COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${CMAKE_PROJECT_NAME}> ${BIN_FILE}
         COMMAND ${CMAKE_OBJDUMP} --all-headers --demangle --disassemble $<TARGET_FILE:${CMAKE_PROJECT_NAME}> > ${LST_FILE}
+        BYPRODUCTS ${HEX_FILE} ${BIN_FILE} ${LST_FILE}
 )
