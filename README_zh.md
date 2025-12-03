@@ -12,15 +12,7 @@ cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
 make -j16
 ```
 *注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在CMakeLists.txt中选择你需要的驱动。  
-```cmake
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/gt9xx.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/ft54x6.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_common.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_f11.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/cst8xx.c
-)
-```
+[CMakeLists.txt](./CMakeLists.txt#L56)
 
 # 刷写
 按下`用户按键`(靠近Type-C口的那个按键)，再接上Type-C线缆。
@@ -30,10 +22,4 @@ sudo ./flash.sh dfu build/U2HTS_F070F6.bin
 ```
 
 # 配置
-[main.c](./Core/Src/main.c):
-```c
-  u2hts_config cfg = {.controller = "auto",
-                      .x_invert = false,
-                      .y_invert = false,
-                      .x_y_swap = false};
-```
+[main.c](./Core/Src/main.c#L98)

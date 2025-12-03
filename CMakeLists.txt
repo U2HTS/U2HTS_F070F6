@@ -36,6 +36,17 @@ add_executable(${CMAKE_PROJECT_NAME})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 
+add_library(u2hts_core_settings INTERFACE)
+target_compile_definitions(u2hts_core_settings INTERFACE
+    -DU2HTS_LOG_LEVEL=-1
+    -DU2HTS_ENABLE_LED
+    -DU2HTS_ENABLE_PERSISTENT_CONFIG
+    -DU2HTS_ENABLE_KEY
+    -DU2HTS_CONFIG_TIMEOUT=3000
+)
+
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
+
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
@@ -43,15 +54,16 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/gt9xx.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/ft54x6.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_common.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/rmi_f11.c
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/touch-controllers/cst8xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/gt9xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/ft54x6.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/rmi_common.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/rmi_f11.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/cst8xx.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_core
     # Add user defined include paths
 )
 
@@ -67,6 +79,8 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
+    u2hts_core
+    u2hts_core_settings
     # Add user defined libraries
 )
 

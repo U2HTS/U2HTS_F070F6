@@ -5,9 +5,11 @@
   All rights reserved.
 */
 
-#include "u2hts_f070f6.h"
+#include <stdbool.h>
 
+#include "main.h"
 #include "u2hts_core.h"
+#include "usbd_customhid.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -161,7 +163,7 @@ static void i2c_reset(void) {
 }
 
 bool u2hts_i2c_detect_slave(uint8_t addr) {
-  i2c_stop();  // 确保总线空闲
+  i2c_stop(); 
   u2hts_delay_us(200);
 
   i2c_reset();
@@ -184,16 +186,90 @@ bool u2hts_i2c_detect_slave(uint8_t addr) {
   return ack;
 }
 
-inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
+// gpio bitbanging i2c
+inline void u2hts_i2c_init(uint32_t bus_speed) { UNUSED(bus_speed); }
+inline void u2hts_i2c_set_speed(uint32_t speed_hz) { UNUSED(speed_hz); }
+// not implemented
+inline void u2hts_spi_init(bool cpol, bool cpha, uint32_t speed) {}
+inline bool u2hts_spi_transfer(void* buf, size_t len) {}
+
+inline void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
+inline void u2hts_delay_us(uint32_t us) {
+  __IO uint32_t currentTicks = SysTick->VAL;
+  /* Number of ticks per millisecond */
+  const uint32_t tickPerMs = SysTick->LOAD + 1;
+  /* Number of ticks to count */
+  const uint32_t nbTicks = ((us - ((us > 0) ? 1 : 0)) * tickPerMs) / 1000;
+  /* Number of elapsed ticks */
+  uint32_t elapsedTicks = 0;
+  __IO uint32_t oldTicks = currentTicks;
+  do {
+    currentTicks = SysTick->VAL;
+    elapsedTicks += (oldTicks < currentTicks)
+                        ? tickPerMs + oldTicks - currentTicks
+                        : oldTicks - currentTicks;
+    oldTicks = currentTicks;
+  } while (nbTicks > elapsedTicks);
+}
+
+inline void u2hts_tpint_set(bool value) {
+  HAL_GPIO_WritePin(TP_INT_GPIO_Port, TP_INT_Pin, value);
+}
+
+inline void u2hts_tprst_set(bool value) {
+  HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, value);
+}
+
+inline bool u2hts_usb_init() {
+  MX_USB_DEVICE_Init();
+  return true;
+}
+inline uint16_t u2hts_get_scan_time() { return (uint16_t)HAL_GetTick(); }
+
+inline void u2hts_led_set(bool on) {
+  // low level is on
+  HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
+}
+
+#define U2HTS_CONFIG_STORAGE_OFFSET 0x08007C00UL  // last page
+
+inline void u2hts_write_config(uint16_t cfg) {
+  HAL_FLASH_Unlock();
+  uint32_t e = 0;
+  FLASH_EraseInitTypeDef erase = {.NbPages = 1,
+                                  .PageAddress = U2HTS_CONFIG_STORAGE_OFFSET,
+                                  .TypeErase = FLASH_TYPEERASE_PAGES};
+  HAL_FLASHEx_Erase(&erase, &e);
+  HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD, U2HTS_CONFIG_STORAGE_OFFSET,
+                    cfg);
+  HAL_FLASH_Lock();
+}
+
+inline uint16_t u2hts_read_config() {
+  return *(uint16_t*)U2HTS_CONFIG_STORAGE_OFFSET;
+}
+
+inline void u2hts_ts_irq_set(bool enable) {
+  enable ? HAL_NVIC_EnableIRQ(TP_INT_EXTI_IRQn)
+         : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
+}
+
+inline bool u2hts_key_read() {
+  // default low
+  return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
+}
+
+
+inline void u2hts_ts_irq_setup(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
   uint32_t real_irq_flag = 0x00;
   switch (irq_flag) {
-    case U2HTS_IRQ_TYPE_HIGH:
-    case U2HTS_IRQ_TYPE_RISING:
+    case IRQ_TYPE_EDGE_RISING:
+    case IRQ_TYPE_LEVEL_HIGH:
       real_irq_flag = GPIO_MODE_IT_RISING;
       break;
-    case U2HTS_IRQ_TYPE_FALLING:
-    case U2HTS_IRQ_TYPE_LOW:
+    case IRQ_TYPE_EDGE_FALLING:
+    case IRQ_TYPE_LEVEL_LOW:
     default:
       real_irq_flag = GPIO_MODE_IT_FALLING;
       break;
@@ -206,7 +282,7 @@ inline void u2hts_ts_irq_setup(uint8_t irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(void* report, uint8_t report_id) {
+inline void u2hts_usb_report(const void* report, uint8_t report_id) {
   static uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
   report_buf[0] = report_id;
   memcpy(report_buf + 1, report, sizeof(u2hts_hid_report));

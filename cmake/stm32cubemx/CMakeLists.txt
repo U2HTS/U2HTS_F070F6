@@ -26,10 +26,8 @@ target_include_directories(stm32cubemx INTERFACE
 
 target_sources(stm32cubemx INTERFACE
     ../../Core/Src/main.c
-    ../../Core/Src/u2hts_core.c
     ../../Core/Src/stm32f0xx_it.c
     ../../Core/Src/stm32f0xx_hal_msp.c
-    ../../Core/Src/u2hts_core.c
     ../../Core/Src/u2hts_f070f6.c
     ../../USB_DEVICE/App/usb_device.c
     ../../USB_DEVICE/App/usbd_desc.c

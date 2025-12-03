@@ -90,6 +90,7 @@
  */
 
 /** Usb HID report descriptor. */
+// clang-format off
 __ALIGN_BEGIN static uint8_t
     CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = {
       0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
@@ -417,7 +418,7 @@ __ALIGN_BEGIN static uint8_t
       0xB1, 0x02,                    // (MAIN)   FEATURE            0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
       0xC0,                          // (MAIN)   END_COLLECTION     Application  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00001001,EXP=-4)
 };
-
+// clang-format on
 /* USER CODE BEGIN PRIVATE_VARIABLES */
 
 /* USER CODE END PRIVATE_VARIABLES */
