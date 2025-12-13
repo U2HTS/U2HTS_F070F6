@@ -9,7 +9,7 @@ git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1
 cd U2HTS_F070F6
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
+cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake
 make -j
 ```
 *Note*: This MCU has limited memories (6 KB RAM / 32 KB Flash), so you would like to disable unused drivers to save memory.  

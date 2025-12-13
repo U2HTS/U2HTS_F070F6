@@ -8,7 +8,7 @@ git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1
 cd U2HTS_F070F6
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel
+cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake
 make -j16
 ```
 *注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在CMakeLists.txt中选择你需要的驱动。  

@@ -21,9 +21,6 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME U2HTS_F070F6)
 
-# Include toolchain file
-include("cmake/gcc-arm-none-eabi.cmake")
-
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 # Core project settings
@@ -38,11 +35,11 @@ add_subdirectory(cmake/stm32cubemx)
 
 add_library(u2hts_core_settings INTERFACE)
 target_compile_definitions(u2hts_core_settings INTERFACE
-    -DU2HTS_LOG_LEVEL=-1
-    -DU2HTS_ENABLE_LED
-    -DU2HTS_ENABLE_PERSISTENT_CONFIG
-    -DU2HTS_ENABLE_KEY
-    -DU2HTS_CONFIG_TIMEOUT=3000
+    U2HTS_LOG_LEVEL=-1
+    U2HTS_ENABLE_LED
+    U2HTS_ENABLE_PERSISTENT_CONFIG
+    U2HTS_ENABLE_KEY
+    U2HTS_CONFIG_TIMEOUT=3000
 )
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
@@ -63,16 +60,11 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/u2hts_core
     # Add user defined include paths
 )
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-    -DU2HTS_LOG_LEVEL=-1
-    -DU2HTS_ENABLE_LED
-    -DU2HTS_ENABLE_PERSISTENT_CONFIG
-    -DU2HTS_ENABLE_KEY
     # Add user defined symbols
 )
 

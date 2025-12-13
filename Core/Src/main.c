@@ -107,10 +107,9 @@ int main(void) {
 
   U2HTS_ERROR_CODES ret = u2hts_init(&cfg);
   if (ret)
+    while (1)
 #ifdef U2HTS_ENABLE_LED
-    u2hts_led_show_error_code(ret);
-#else
-    while (1);
+      u2hts_led_show_error_code(ret);
 #endif
   /* USER CODE END 2 */
   /* Infinite loop */

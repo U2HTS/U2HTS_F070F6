@@ -191,7 +191,7 @@ inline void u2hts_i2c_init(uint32_t bus_speed) { UNUSED(bus_speed); }
 inline void u2hts_i2c_set_speed(uint32_t speed_hz) { UNUSED(speed_hz); }
 // not implemented
 inline void u2hts_spi_init(bool cpol, bool cpha, uint32_t speed) {}
-inline bool u2hts_spi_transfer(void* buf, size_t len) {}
+inline bool u2hts_spi_transfer(void* buf, size_t len) { return false; }
 
 inline void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
 inline void u2hts_delay_us(uint32_t us) {
@@ -282,7 +282,7 @@ inline void u2hts_ts_irq_setup(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(const void* report, uint8_t report_id) {
+inline void u2hts_usb_report(uint8_t report_id, const void* report) {
   static uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
   report_buf[0] = report_id;
   memcpy(report_buf + 1, report, sizeof(u2hts_hid_report));
