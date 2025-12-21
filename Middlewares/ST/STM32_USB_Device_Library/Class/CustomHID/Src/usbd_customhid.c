@@ -257,7 +257,8 @@ the configuration*/
 __ALIGN_BEGIN static const uint8_t USBD_CUSTOM_HID_OtherSpeedCfgDesc
     [USB_CUSTOM_HID_CONFIG_DESC_SIZ] __ALIGN_END = {
         0x09, /* bLength: Configuration Descriptor size */
-        USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION, /* bDescriptorType: Configuration */
+        USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION, /* bDescriptorType:
+                                                    Configuration */
         USB_CUSTOM_HID_CONFIG_DESC_SIZ,
         /* wTotalLength: Bytes returned */
         0x00,
@@ -452,7 +453,7 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
               break;
             case U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID:
               UNUSED(0);
-              static const uint8_t dummy_thqa_cert[257] = {
+              const uint8_t dummy_thqa_cert[257] = {
                   // clang-format off
                 U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID,
                 0xfc, 0x28, 0xfe, 0x84, 0x40, 0xcb, 0x9a, 0x87, 0x0d, 0xbe, 0x57, 0x3c,
@@ -477,9 +478,10 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
                 0xa2, 0xa8, 0x6a, 0x89, 0xd6, 0xbf, 0xf2, 0xd3, 0x32, 0x2a, 0x9a, 0xe4,
                 0xcf, 0x17, 0xb7, 0xb8, 0xf4, 0xe1, 0x33, 0x08, 0x24, 0x8b, 0xc4, 0x43,
                 0xa5, 0xe5, 0x24, 0xc2
-                //clang-format on
+                  // clang-format on
               };
-              USBD_CtlSendData(pdev, (uint8_t *)dummy_thqa_cert, sizeof(dummy_thqa_cert));
+              USBD_CtlSendData(pdev, (uint8_t*)dummy_thqa_cert,
+                               sizeof(dummy_thqa_cert));
               break;
           }
           break;
@@ -488,7 +490,7 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
           break;
 
         case CUSTOM_HID_REQ_GET_PROTOCOL:
-          USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->Protocol, 1U);
+          USBD_CtlSendData(pdev, (uint8_t*)(void*)&hhid->Protocol, 1U);
           break;
 
         case CUSTOM_HID_REQ_SET_IDLE:
@@ -496,7 +498,7 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
           break;
 
         case CUSTOM_HID_REQ_GET_IDLE:
-          USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->IdleState, 1U);
+          USBD_CtlSendData(pdev, (uint8_t*)(void*)&hhid->IdleState, 1U);
           break;
 
         case CUSTOM_HID_REQ_SET_REPORT:
@@ -515,7 +517,7 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
       switch (req->bRequest) {
         case USB_REQ_GET_STATUS:
           if (pdev->dev_state == USBD_STATE_CONFIGURED) {
-            USBD_CtlSendData(pdev, (uint8_t *)(void *)&status_info, 2U);
+            USBD_CtlSendData(pdev, (uint8_t*)(void*)&status_info, 2U);
           } else {
             USBD_CtlError(pdev, req);
             ret = USBD_FAIL;
@@ -525,10 +527,10 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
         case USB_REQ_GET_DESCRIPTOR:
           if (req->wValue >> 8 == CUSTOM_HID_REPORT_DESC) {
             len = MIN(USBD_CUSTOM_HID_REPORT_DESC_SIZE, req->wLength);
-            pbuf = ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->pReport;
+            pbuf = ((USBD_CUSTOM_HID_ItfTypeDef*)pdev->pUserData)->pReport;
           } else {
             if (req->wValue >> 8 == CUSTOM_HID_DESCRIPTOR_TYPE) {
-              pbuf = (uint8_t *)USBD_CUSTOM_HID_Desc;
+              pbuf = (uint8_t*)USBD_CUSTOM_HID_Desc;
               len = MIN(USB_CUSTOM_HID_DESC_SIZ, req->wLength);
             }
           }
@@ -538,7 +540,7 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
 
         case USB_REQ_GET_INTERFACE:
           if (pdev->dev_state == USBD_STATE_CONFIGURED) {
-            USBD_CtlSendData(pdev, (uint8_t *)(void *)&hhid->AltSetting, 1U);
+            USBD_CtlSendData(pdev, (uint8_t*)(void*)&hhid->AltSetting, 1U);
           } else {
             USBD_CtlError(pdev, req);
             ret = USBD_FAIL;
@@ -576,10 +578,10 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef* pdev,
  * @param  buff: pointer to report
  * @retval status
  */
-uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev, uint8_t *report,
+uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef* pdev, uint8_t* report,
                                    uint16_t len) {
-  USBD_CUSTOM_HID_HandleTypeDef *hhid =
-      (USBD_CUSTOM_HID_HandleTypeDef *)pdev->pClassData;
+  USBD_CUSTOM_HID_HandleTypeDef* hhid =
+      (USBD_CUSTOM_HID_HandleTypeDef*)pdev->pClassData;
 
   if (pdev->dev_state == USBD_STATE_CONFIGURED) {
     if (hhid->state == CUSTOM_HID_IDLE) {
@@ -599,9 +601,9 @@ uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev, uint8_t *report,
  * @param  length : pointer data length
  * @retval pointer to descriptor buffer
  */
-static uint8_t *USBD_CUSTOM_HID_GetFSCfgDesc(uint16_t *length) {
+static uint8_t* USBD_CUSTOM_HID_GetFSCfgDesc(uint16_t* length) {
   *length = sizeof(USBD_CUSTOM_HID_CfgFSDesc);
-  return (uint8_t *)USBD_CUSTOM_HID_CfgFSDesc;
+  return (uint8_t*)USBD_CUSTOM_HID_CfgFSDesc;
 }
 
 /**
@@ -611,9 +613,9 @@ static uint8_t *USBD_CUSTOM_HID_GetFSCfgDesc(uint16_t *length) {
  * @param  length : pointer data length
  * @retval pointer to descriptor buffer
  */
-static uint8_t *USBD_CUSTOM_HID_GetHSCfgDesc(uint16_t *length) {
+static uint8_t* USBD_CUSTOM_HID_GetHSCfgDesc(uint16_t* length) {
   *length = sizeof(USBD_CUSTOM_HID_CfgHSDesc);
-  return (uint8_t *)USBD_CUSTOM_HID_CfgHSDesc;
+  return (uint8_t*)USBD_CUSTOM_HID_CfgHSDesc;
 }
 
 /**
@@ -623,9 +625,9 @@ static uint8_t *USBD_CUSTOM_HID_GetHSCfgDesc(uint16_t *length) {
  * @param  length : pointer data length
  * @retval pointer to descriptor buffer
  */
-static uint8_t *USBD_CUSTOM_HID_GetOtherSpeedCfgDesc(uint16_t *length) {
+static uint8_t* USBD_CUSTOM_HID_GetOtherSpeedCfgDesc(uint16_t* length) {
   *length = sizeof(USBD_CUSTOM_HID_OtherSpeedCfgDesc);
-  return (uint8_t *)USBD_CUSTOM_HID_OtherSpeedCfgDesc;
+  return (uint8_t*)USBD_CUSTOM_HID_OtherSpeedCfgDesc;
 }
 
 /**
@@ -635,11 +637,11 @@ static uint8_t *USBD_CUSTOM_HID_GetOtherSpeedCfgDesc(uint16_t *length) {
  * @param  epnum: endpoint index
  * @retval status
  */
-static uint8_t USBD_CUSTOM_HID_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum) {
+static uint8_t USBD_CUSTOM_HID_DataIn(USBD_HandleTypeDef* pdev, uint8_t epnum) {
   UNUSED(epnum);
   /* Ensure that the FIFO is empty before a new transfer, this condition could
   be caused by  a new transfer before the end of the previous transfer */
-  ((USBD_CUSTOM_HID_HandleTypeDef *)pdev->pClassData)->state = CUSTOM_HID_IDLE;
+  ((USBD_CUSTOM_HID_HandleTypeDef*)pdev->pClassData)->state = CUSTOM_HID_IDLE;
 
   return USBD_OK;
 }
@@ -651,14 +653,14 @@ static uint8_t USBD_CUSTOM_HID_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum) {
  * @param  epnum: endpoint index
  * @retval status
  */
-static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev,
+static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef* pdev,
                                        uint8_t epnum) {
   UNUSED(epnum);
 
-  USBD_CUSTOM_HID_HandleTypeDef *hhid =
-      (USBD_CUSTOM_HID_HandleTypeDef *)pdev->pClassData;
+  USBD_CUSTOM_HID_HandleTypeDef* hhid =
+      (USBD_CUSTOM_HID_HandleTypeDef*)pdev->pClassData;
 
-  ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)
+  ((USBD_CUSTOM_HID_ItfTypeDef*)pdev->pUserData)
       ->OutEvent(hhid->Report_buf[0], hhid->Report_buf[1]);
 
   USBD_LL_PrepareReceive(pdev, CUSTOM_HID_EPOUT_ADDR, hhid->Report_buf,
@@ -673,12 +675,12 @@ static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev,
  * @param  pdev: device instance
  * @retval status
  */
-static uint8_t USBD_CUSTOM_HID_EP0_RxReady(USBD_HandleTypeDef *pdev) {
-  USBD_CUSTOM_HID_HandleTypeDef *hhid =
-      (USBD_CUSTOM_HID_HandleTypeDef *)pdev->pClassData;
+static uint8_t USBD_CUSTOM_HID_EP0_RxReady(USBD_HandleTypeDef* pdev) {
+  USBD_CUSTOM_HID_HandleTypeDef* hhid =
+      (USBD_CUSTOM_HID_HandleTypeDef*)pdev->pClassData;
 
   if (hhid->IsReportAvailable == 1U) {
-    ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)
+    ((USBD_CUSTOM_HID_ItfTypeDef*)pdev->pUserData)
         ->OutEvent(hhid->Report_buf[0], hhid->Report_buf[1]);
     hhid->IsReportAvailable = 0U;
   }
@@ -692,9 +694,9 @@ static uint8_t USBD_CUSTOM_HID_EP0_RxReady(USBD_HandleTypeDef *pdev) {
  * @param  length : pointer data length
  * @retval pointer to descriptor buffer
  */
-static uint8_t *USBD_CUSTOM_HID_GetDeviceQualifierDesc(uint16_t *length) {
+static uint8_t* USBD_CUSTOM_HID_GetDeviceQualifierDesc(uint16_t* length) {
   *length = sizeof(USBD_CUSTOM_HID_DeviceQualifierDesc);
-  return (uint8_t *)USBD_CUSTOM_HID_DeviceQualifierDesc;
+  return (uint8_t*)USBD_CUSTOM_HID_DeviceQualifierDesc;
 }
 
 /**
@@ -703,8 +705,8 @@ static uint8_t *USBD_CUSTOM_HID_GetDeviceQualifierDesc(uint16_t *length) {
  * @param  fops: CUSTOMHID Interface callback
  * @retval status
  */
-uint8_t USBD_CUSTOM_HID_RegisterInterface(USBD_HandleTypeDef *pdev,
-                                          USBD_CUSTOM_HID_ItfTypeDef *fops) {
+uint8_t USBD_CUSTOM_HID_RegisterInterface(USBD_HandleTypeDef* pdev,
+                                          USBD_CUSTOM_HID_ItfTypeDef* fops) {
   uint8_t ret = USBD_FAIL;
 
   if (fops != NULL) {
