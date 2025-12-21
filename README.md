@@ -3,6 +3,12 @@
 [zh_CN(简体中文)](./README_zh.md)
 
 # Build
+## GitHub action
+Fork this repository to your account.  
+Click `Actions` page, click `enable workflow`.  
+Click `Build firmware` on the left，click `Run workflow`.  
+Wait until build complete and grab the artifacts.  
+## Manual
 ```bash
 sudo apt install gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi make cmake
 git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1

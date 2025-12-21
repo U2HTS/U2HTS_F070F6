@@ -2,6 +2,12 @@
 [U2HTS](https://github.com/CNflysky/U2HTS)的`STM32F070F6P6`移植版。
 
 # 构建
+## 借助GitHub actions构建
+点击`fork`按钮，将本仓库fork到你的账号下。  
+点击`Actions`标签页，点击`Enable workflow`。  
+点击左边的`Build firmware`，点击`Run workflow`。  
+构建完成后下载产物即可。
+## 手动构建
 ```bash
 sudo apt install gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi make cmake
 git clone https://github.com/CNflysky/U2HTS_F070F6.git --recursive --depth 1
