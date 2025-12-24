@@ -114,7 +114,7 @@ int main(void) {
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1) u2hts_main();
+  while (1) u2hts_task();
   /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }

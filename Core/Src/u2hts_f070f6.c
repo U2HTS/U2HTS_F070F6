@@ -224,7 +224,7 @@ inline bool u2hts_usb_init() {
   MX_USB_DEVICE_Init();
   return true;
 }
-inline uint16_t u2hts_get_scan_time() { return (uint16_t)HAL_GetTick(); }
+inline uint16_t u2hts_get_timestamp() { return (uint16_t)HAL_GetTick(); }
 
 inline void u2hts_led_set(bool on) {
   // low level is on
@@ -254,7 +254,7 @@ inline void u2hts_ts_irq_set(bool enable) {
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
 
-inline bool u2hts_key_read() {
+inline bool u2hts_usrkey_get() {
   // default low
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }
