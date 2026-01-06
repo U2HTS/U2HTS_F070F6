@@ -12,19 +12,17 @@
 sudo apt install gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi make cmake
 git clone https://github.com/U2HTS/U2HTS_F070F6.git --recursive --depth 1
 cd U2HTS_F070F6
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake
-make -j`nproc`
+cmake --preset MinSizeRel
+cmake --build build/MinSizeRel
 ```
 *注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在CMakeLists.txt中选择你需要的驱动。  
 [CMakeLists.txt](./CMakeLists.txt#L56)
 
 # 刷写
-按下`用户按键`(靠近Type-C口的那个按键)，再接上Type-C线缆。
+按下`用户按键`再给板子上电。
 ```bash
 sudo apt install dfu-util
-sudo ./flash.sh dfu build/U2HTS_F070F6.bin
+sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 ```
 
 # 配置

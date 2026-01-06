@@ -23,7 +23,7 @@ jobs:
     - name: Build firmware
       run: |
         cmake --preset MinSizeRel
-        cmake --build build/MinSizdRel
+        cmake --build build/MinSizeRel
     
     - name: Upload firmware
       uses: actions/upload-artifact@v4
