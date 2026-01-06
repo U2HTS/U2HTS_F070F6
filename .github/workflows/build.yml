@@ -10,25 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: checkout
+    - name: Fetch code
       uses: actions/checkout@v4
       with:
         submodules: recursive
     
-    - name: install dependencies
+    - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi ninja-build cmake
     
-    - name: Configure and build
+    - name: Build firmware
       run: |
-        cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake
-        cmake --build build
+        cmake --preset MinSizeRel
+        cmake --build build/MinSizdRel
     
     - name: Upload firmware
       uses: actions/upload-artifact@v4
       with:
         name: ${{ github.event.repository.name }}-${{ github.run_id }}
         path: |
-          build/*.hex
-          build/*.bin
+          build/MinSizeRel/U2HTS_F070F6.hex
+          build/MinSizeRel/U2HTS_F070F6.bin
