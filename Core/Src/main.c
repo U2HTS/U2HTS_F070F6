@@ -47,6 +47,30 @@
 SPI_HandleTypeDef hspi1;
 #endif
 
+#ifdef U2HTS_F070F6_SWCLK_AS_UART
+static UART_HandleTypeDef huart2;
+
+static void MX_USART2_Init() {
+  __HAL_RCC_USART2_CLK_ENABLE();
+  huart2.Instance = USART2;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  HAL_UART_Init(&huart2);
+}
+
+int __io_putchar(int ch) {
+  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xFFFF);
+  return ch;
+}
+
+#endif
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -93,6 +117,9 @@ int main(void) {
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  #ifdef U2HTS_F070F6_SWCLK_AS_UART
+  MX_USART2_Init();
+  #endif
   // MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
   u2hts_config cfg = {.controller = "auto",

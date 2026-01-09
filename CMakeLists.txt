@@ -32,10 +32,22 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+# Disable logging to save memory
+set(U2HTS_F070F6_SWCLK_AS_UART OFF)
+# See u2hts_core/u2hts_core.h line 16 for log levels
+set(U2HTS_LOG_LEVEL -1)
+
+if(NOT U2HTS_F070F6_SWCLK_AS_UART)
+    if(NOT U2HTS_LOG_LEVEL EQUAL -1)
+        message(FATAL_ERROR "Set U2HTS_LOG_LEVEL > -1 requires set U2HTS_F070F6_SWCLK_AS_UART to ON!")
+    endif()
+endif()
+
 
 add_library(u2hts_core_settings INTERFACE)
 target_compile_definitions(u2hts_core_settings INTERFACE
-    U2HTS_LOG_LEVEL=-1
+    U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
+     $<$<BOOL:${U2HTS_F070F6_SWCLK_AS_UART}>:U2HTS_F070F6_SWCLK_AS_UART>
     U2HTS_ENABLE_LED
     U2HTS_ENABLE_PERSISTENT_CONFIG
     U2HTS_ENABLE_KEY

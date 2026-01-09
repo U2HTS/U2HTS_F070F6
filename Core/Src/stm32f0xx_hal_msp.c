@@ -79,6 +79,20 @@ void HAL_MspInit(void)
   /* USER CODE END MspInit 1 */
 }
 
+#ifdef U2HTS_F070F6_SWCLK_AS_UART
+void HAL_UART_MspInit(UART_HandleTypeDef *huart) {
+  UNUSED(huart);
+  GPIO_InitTypeDef gpio_config = {
+    .Alternate = GPIO_AF1_USART2,
+    .Mode = GPIO_MODE_AF_PP,
+    .Pin = UART_TX_Pin,
+    .Pull = GPIO_PULLUP,
+    .Speed = GPIO_SPEED_FREQ_HIGH,
+  };
+  HAL_GPIO_Init(UART_TX_Port, &gpio_config);
+}
+#endif
+
 #if HAL_SPI_MODULE_ENABLED
 /**
 * @brief SPI MSP Initialization

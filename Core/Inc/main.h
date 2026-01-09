@@ -70,6 +70,8 @@ void MX_USB_DEVICE_Init();
 #define TP_SCL_NSS_GPIO_Port GPIOA
 #define TP_SDA_Pin GPIO_PIN_1
 #define TP_SDA_GPIO_Port GPIOB
+#define UART_TX_Port GPIOA
+#define UART_TX_Pin GPIO_PIN_14
 
 /* USER CODE BEGIN Private defines */
 
