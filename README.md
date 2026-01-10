@@ -17,7 +17,7 @@ cmake --preset MinSizeRel
 cmake --build build/MinSizeRel
 ```
 *Note*: This MCU has small memories (6 KB RAM / 32 KB Flash), so you would like to disable unused drivers to save memory.  
-[CMakeLists.txt](./CMakeLists.txt#L56)
+[CMakeLists.txt](./CMakeLists.txt#L74)
 
 # Flash
 Press `USR button` while power on the board.
@@ -27,4 +27,4 @@ sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 ```
 
 # Config
-[main.c](./Core/Src/main.c#L98)
+[main.c](./Core/Src/main.c#L128)

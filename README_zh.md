@@ -16,7 +16,7 @@ cmake --preset MinSizeRel
 cmake --build build/MinSizeRel
 ```
 *注意*：由于MCU的存储器较小 (6 KB RAM / 32 KB Flash)，只能集成数量有限的驱动。请在CMakeLists.txt中选择你需要的驱动。  
-[CMakeLists.txt](./CMakeLists.txt#L56)
+[CMakeLists.txt](./CMakeLists.txt#L74)
 
 # 刷写
 按下`用户按键`再给板子上电。
@@ -26,4 +26,4 @@ sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 ```
 
 # 配置
-[main.c](./Core/Src/main.c#L98)
+[main.c](./Core/Src/main.c#L128)

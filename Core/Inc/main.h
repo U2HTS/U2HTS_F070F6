@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -51,7 +51,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void MX_USB_DEVICE_Init();
+
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
@@ -66,8 +66,8 @@ void MX_USB_DEVICE_Init();
 #define USR_LED_GPIO_Port GPIOA
 #define USR_KEY_Pin GPIO_PIN_3
 #define USR_KEY_GPIO_Port GPIOA
-#define TP_SCL_NSS_Pin GPIO_PIN_4
-#define TP_SCL_NSS_GPIO_Port GPIOA
+#define TP_SCL_Pin GPIO_PIN_4
+#define TP_SCL_GPIO_Port GPIOA
 #define TP_SDA_Pin GPIO_PIN_1
 #define TP_SDA_GPIO_Port GPIOB
 #define UART_TX_Port GPIOA

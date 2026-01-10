@@ -10,14 +10,15 @@
 #include "main.h"
 #include "u2hts_core.h"
 #include "usbd_customhid.h"
+#include "usb_device.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 #define I2C_SDA(x) HAL_GPIO_WritePin(TP_SDA_GPIO_Port, TP_SDA_Pin, x)
-#define I2C_SCL(x) HAL_GPIO_WritePin(TP_SCL_NSS_GPIO_Port, TP_SCL_NSS_Pin, x)
+#define I2C_SCL(x) HAL_GPIO_WritePin(TP_SCL_GPIO_Port, TP_SCL_Pin, x)
 
 #define I2C_SDA_R HAL_GPIO_ReadPin(TP_SDA_GPIO_Port, TP_SDA_Pin)
-#define I2C_SCL_R HAL_GPIO_ReadPin(TP_SCL_NSS_GPIO_Port, TP_SCL_NSS_Pin)
+#define I2C_SCL_R HAL_GPIO_ReadPin(TP_SCL_GPIO_Port, TP_SCL_Pin)
 
 #define I2C_SDA_I                                                 \
   GPIO_InitTypeDef sda_gpio_in = {.Pin = TP_SDA_Pin,              \
@@ -306,8 +307,6 @@ inline bool u2hts_tpint_get() {
   return HAL_GPIO_ReadPin(TP_INT_GPIO_Port, TP_INT_Pin);
 }
 
-#ifndef U2HTS_POLLING
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   u2hts_ts_irq_status_set((GPIO_Pin == TP_INT_Pin));
 }
-#endif

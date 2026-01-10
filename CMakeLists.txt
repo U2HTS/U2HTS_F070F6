@@ -23,15 +23,20 @@ set(CMAKE_PROJECT_NAME U2HTS_F070F6)
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 # Core project settings
-project(${CMAKE_PROJECT_NAME} C CXX ASM)
+project(${CMAKE_PROJECT_NAME})
 message("Build type: " ${CMAKE_BUILD_TYPE})
+
+# Enable CMake support for ASM and C languages
+enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+
 # Disable logging to save memory
 set(U2HTS_F070F6_SWCLK_AS_UART OFF)
 # See u2hts_core/u2hts_core.h line 16 for log levels
@@ -43,6 +48,7 @@ if(NOT U2HTS_F070F6_SWCLK_AS_UART)
     endif()
 endif()
 
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
 
 add_library(u2hts_core_settings INTERFACE)
 target_compile_definitions(u2hts_core_settings INTERFACE
@@ -54,15 +60,18 @@ target_compile_definitions(u2hts_core_settings INTERFACE
     U2HTS_CONFIG_TIMEOUT=3000
 )
 
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
-
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
 )
 
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+     ${CMAKE_CURRENT_LIST_DIR}/Core/Src/u2hts_f070f6.c
+)
+
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    # Add user sources here
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/gt9xx.c
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/ft54x6.c
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/rmi_common.c
@@ -80,12 +89,15 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
 )
 
+# Remove wrong libob.a library dependency when using cpp files
+list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
+
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
+    # Add user defined libraries
     u2hts_core
     u2hts_core_settings
-    # Add user defined libraries
 )
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.hex)
