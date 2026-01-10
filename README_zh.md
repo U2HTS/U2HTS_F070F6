@@ -27,3 +27,11 @@ sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 
 # 配置
 [main.c](./Core/Src/main.c#L128)
+
+# Debug
+通过在[CMakeLists.txt](./CMakeLists.txt#L40)中配置相关选项，可以将`SWCLK`复用为UART TX来打印日志: 
+```cmake
+# Turn on log print via UART2_TX
+set(U2HTS_F070F6_SWCLK_AS_UART ON)
+set(U2HTS_LOG_LEVEL U2HTS_LOG_LEVEL_DEBUG)
+```
