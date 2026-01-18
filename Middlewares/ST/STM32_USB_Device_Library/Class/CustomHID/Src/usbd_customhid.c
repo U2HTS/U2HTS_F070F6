@@ -498,7 +498,7 @@ static uint8_t  USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef *pdev,
                 };
                 USBD_CtlSendData(pdev, (uint8_t*)dummy_thqa_cert,
                                  sizeof(dummy_thqa_cert));
-            break;
+                break;
             }
         break;
 

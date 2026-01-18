@@ -66,7 +66,8 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-     ${CMAKE_CURRENT_LIST_DIR}/Core/Src/u2hts_f070f6.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/u2hts_f070f6.c
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Src/gpio_i2c.c
 )
 
 # Add sources to executable

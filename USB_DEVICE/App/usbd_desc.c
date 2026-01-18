@@ -199,7 +199,7 @@ __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
   #pragma data_alignment=4
 #endif
-__ALIGN_BEGIN const uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END = {
+__ALIGN_BEGIN uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END = {
   USB_SIZ_STRING_SERIAL,
   USB_DESC_TYPE_STRING,
 };
@@ -348,8 +348,8 @@ static void Get_SerialNum(void)
 
   if (deviceserial0 != 0)
   {
-    IntToUnicode(deviceserial0, (uint8_t *)&USBD_StringSerial[2], 8);
-    IntToUnicode(deviceserial1, (uint8_t *)&USBD_StringSerial[18], 4);
+    IntToUnicode(deviceserial0, &USBD_StringSerial[2], 8);
+    IntToUnicode(deviceserial1, &USBD_StringSerial[18], 4);
   }
 }
 

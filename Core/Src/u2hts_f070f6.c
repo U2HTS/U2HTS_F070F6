@@ -9,182 +9,57 @@
 
 #include "main.h"
 #include "u2hts_core.h"
-#include "usbd_customhid.h"
 #include "usb_device.h"
+#include "usbd_customhid.h"
+#include "gpio_i2c.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
-#define I2C_SDA(x) HAL_GPIO_WritePin(TP_SDA_GPIO_Port, TP_SDA_Pin, x)
-#define I2C_SCL(x) HAL_GPIO_WritePin(TP_SCL_GPIO_Port, TP_SCL_Pin, x)
-
-#define I2C_SDA_R HAL_GPIO_ReadPin(TP_SDA_GPIO_Port, TP_SDA_Pin)
-#define I2C_SCL_R HAL_GPIO_ReadPin(TP_SCL_GPIO_Port, TP_SCL_Pin)
-
-#define I2C_SDA_I                                                 \
-  GPIO_InitTypeDef sda_gpio_in = {.Pin = TP_SDA_Pin,              \
-                                  .Mode = GPIO_MODE_INPUT,        \
-                                  .Speed = GPIO_SPEED_FREQ_HIGH}; \
-  HAL_GPIO_Init(TP_SDA_GPIO_Port, &sda_gpio_in);
-
-#define I2C_SDA_O                                                  \
-  GPIO_InitTypeDef sda_gpio_out = {.Pin = TP_SDA_Pin,              \
-                                   .Mode = GPIO_MODE_OUTPUT_OD,    \
-                                   .Pull = GPIO_NOPULL,            \
-                                   .Speed = GPIO_SPEED_FREQ_HIGH}; \
-  HAL_GPIO_Init(TP_SDA_GPIO_Port, &sda_gpio_out);
-
-#define I2C_DELAY 5
-
-static void i2c_start() {
-  I2C_SDA(1);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY / 2);
-  I2C_SDA(0);
-  u2hts_delay_us(I2C_DELAY / 2);
-  I2C_SCL(0);
+inline static bool getscl() {
+  return HAL_GPIO_ReadPin(TP_SCL_GPIO_Port, TP_SCL_Pin);
 }
 
-void i2c_stop() {
-  I2C_SDA(0);
-  u2hts_delay_us(I2C_DELAY / 2);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY / 2);
-  I2C_SDA(1);
-  u2hts_delay_us(I2C_DELAY);
+inline static bool getsda() {
+  return HAL_GPIO_ReadPin(TP_SDA_GPIO_Port, TP_SDA_Pin);
 }
 
-static void i2c_scl_high_wait(void) {
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY / 2);
-  uint16_t timeout = 0xFFFF;
-  while (!I2C_SCL_R)
-    if (--timeout == 0) break;
+inline static void setsda(bool state) {
+  HAL_GPIO_WritePin(TP_SDA_GPIO_Port, TP_SDA_Pin, state);
 }
 
-// true: ack false: nack
-static void i2c_ack(bool ack) {
-  I2C_SCL(0);
-  I2C_SDA(!ack);
-  u2hts_delay_us(I2C_DELAY);
-  i2c_scl_high_wait();
-  I2C_SCL(0);
-  I2C_SDA(1);
+inline static void setscl(bool state) {
+  HAL_GPIO_WritePin(TP_SCL_GPIO_Port, TP_SCL_Pin, state);
 }
 
-static bool i2c_wait_ack() {
-  I2C_SDA(1);
-  u2hts_delay_us(I2C_DELAY / 2);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY / 2);
-  uint8_t timeout = 0;
-  while (I2C_SDA_R) {
-    timeout++;
-    if (timeout > 254) {
-      i2c_stop();
-      return false;
-    }
-    u2hts_delay_us(1);
-  }
-  u2hts_delay_us(I2C_DELAY);
-  I2C_SCL(0);
-  return true;
+inline static void setsdamode(bool mode) {
+#if 0
+  GPIO_InitTypeDef gpio = {.Mode = mode ? GPIO_MODE_OUTPUT_OD :
+  GPIO_MODE_INPUT,
+                           .Pull = mode ? GPIO_PULLUP : GPIO_NOPULL,
+                           .Speed = GPIO_SPEED_FREQ_HIGH,
+                           .Pin = TP_SDA_Pin};
+  HAL_GPIO_Init(TP_SDA_GPIO_Port, &gpio);
+#endif
 }
 
-static void i2c_write_byte(uint8_t byte) {
-  for (uint8_t i = 0; i < 8; i++) {
-    I2C_SCL(0);
-    I2C_SDA((byte & 0x80) ? 1 : 0);
-    byte <<= 1;
-    u2hts_delay_us(I2C_DELAY);
-    i2c_scl_high_wait();
-    u2hts_delay_us(I2C_DELAY);
-    I2C_SCL(0);
-  }
-  u2hts_delay_us(I2C_DELAY);
+static gpio_i2c i2c = {.delay = 5,
+                .delay_us = u2hts_delay_us,
+                .getscl = getscl,
+                .getsda = getsda,
+                .setscl = setscl,
+                .setsda = setsda,
+                .setsdamode = setsdamode};
+
+inline bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len, bool stop) {
+  return gpio_i2c_write(&i2c, slave_addr, buf, len, stop);
 }
 
-static uint8_t i2c_read_byte(bool ack) {
-  uint8_t buf = 0x00;
-  I2C_SDA_I;
-  for (uint8_t i = 0; i < 8; i++) {
-    I2C_SCL(0);
-    u2hts_delay_us(I2C_DELAY);
-    i2c_scl_high_wait();
-    buf <<= 1;
-    if (I2C_SDA_R) buf++;
-    u2hts_delay_us(I2C_DELAY);
-    I2C_SCL(0);
-  }
-  I2C_SDA_O;
-  i2c_ack(ack);
-  return buf;
+inline bool u2hts_i2c_read(uint8_t slave_addr, void* buf, size_t len) {
+  return gpio_i2c_read(&i2c, slave_addr, buf, len);
 }
 
-bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len, bool stop) {
-  uint8_t* buf_ptr = buf;
-  bool ret = false;
-  i2c_start();
-  i2c_write_byte(slave_addr << 1 | 0);
-  ret = i2c_wait_ack();
-  if (!ret) return ret;
-  for (uint32_t i = 0; i < len; i++) {
-    i2c_write_byte(buf_ptr[i]);
-    ret = i2c_wait_ack();
-    if (!ret) return ret;
-  }
-  if (stop) i2c_stop();
-  return ret;
-}
-
-bool u2hts_i2c_read(uint8_t slave_addr, void* buf, size_t len) {
-  uint8_t* buf_ptr = buf;
-  bool ret = false;
-  i2c_start();
-  i2c_write_byte((slave_addr << 1) | 1);
-  ret = i2c_wait_ack();
-  if (!ret) return ret;
-  for (uint32_t i = 0; i < len; i++) buf_ptr[i] = i2c_read_byte((i != len - 1));
-
-  i2c_stop();
-  return ret;
-}
-
-static void i2c_reset(void) {
-  I2C_SDA(1);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY);
-  for (uint8_t i = 0; i < 9; i++) {
-    I2C_SCL(0);
-    u2hts_delay_us(I2C_DELAY);
-    I2C_SCL(1);
-    u2hts_delay_us(I2C_DELAY);
-  }
-
-  i2c_stop();
-}
-
-bool u2hts_i2c_detect_slave(uint8_t addr) {
-  i2c_stop(); 
-  u2hts_delay_us(200);
-
-  i2c_reset();
-
-  i2c_start();
-  i2c_write_byte(addr << 1);
-
-  I2C_SDA(1);
-  u2hts_delay_us(I2C_DELAY);
-  I2C_SCL(1);
-  u2hts_delay_us(I2C_DELAY);
-
-  bool ack = !I2C_SDA_R;
-
-  u2hts_delay_us(I2C_DELAY);
-  I2C_SCL(0);
-  i2c_stop();
-  u2hts_delay_us(200);
-
-  return ack;
+inline bool u2hts_i2c_detect_slave(uint8_t addr) {
+  return gpio_i2c_detect_slave(&i2c, addr);
 }
 
 // gpio bitbanging i2c
@@ -259,7 +134,6 @@ inline bool u2hts_usrkey_get() {
   // default low
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }
-
 
 inline void u2hts_ts_irq_setup(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
