@@ -1,6 +1,7 @@
 # U2HTS_F070F6
 [U2HTS](https://github.com/U2HTS/U2HTS) `STM32F070F6P6` Port.  
-[zh_CN(简体中文)](./README_zh.md)
+[zh_CN(简体中文)](./README_zh.md)  
+<img width="620" height="380" alt="PCB" src="https://github.com/user-attachments/assets/2f6e9a71-b0eb-4756-abe4-4c37f9a0a067" />
 
 # Build
 ## GitHub action
