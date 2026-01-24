@@ -135,7 +135,7 @@ inline bool u2hts_usrkey_get() {
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }
 
-inline void u2hts_ts_irq_setup(U2HTS_IRQ_TYPES irq_flag) {
+inline void u2hts_ts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
   uint32_t real_irq_flag = 0x00;
   switch (irq_flag) {
@@ -157,7 +157,7 @@ inline void u2hts_ts_irq_setup(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(uint8_t report_id, const void* report) {
+inline void u2hts_usb_report(uint8_t report_id, const u2hts_hid_report* report) {
   static uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
   report_buf[0] = report_id;
   memcpy(report_buf + 1, report, sizeof(u2hts_hid_report));
