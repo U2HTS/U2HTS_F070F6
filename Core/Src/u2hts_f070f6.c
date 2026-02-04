@@ -107,7 +107,7 @@ inline void u2hts_led_set(bool on) {
   HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
 }
 
-#define U2HTS_CONFIG_STORAGE_OFFSET 0x08007C00UL  // last page
+#define U2HTS_CONFIG_STORAGE_OFFSET FLASH_BANK1_END - FLASH_PAGE_SIZE + 1 // 0x08007C00UL
 
 inline void u2hts_write_config(uint16_t cfg) {
   HAL_FLASH_Unlock();

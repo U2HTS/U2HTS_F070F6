@@ -8,7 +8,7 @@ static void gpio_i2c_start(gpio_i2c* i2c) {
   i2c->setscl(0);
 }
 
-void gpio_i2c_stop(gpio_i2c* i2c) {
+static void gpio_i2c_stop(gpio_i2c* i2c) {
   i2c->setsda(0);
   i2c->delay_us(i2c->delay / 2);
   i2c->setscl(1);
@@ -140,9 +140,11 @@ bool gpio_i2c_detect_slave(gpio_i2c* i2c, uint8_t addr) {
   gpio_i2c_write_byte(i2c, addr << 1);
 
   i2c->setsda(true);
-  i2c->delay_us(i2c->delay);
-  i2c->setscl(true);
-  i2c->delay_us(i2c->delay);
+  i2c->delay_us(i2c->delay / 2);
+  
+  gpio_i2c_scl_high_wait(i2c);
+  
+  i2c->delay_us(i2c->delay / 2);
   i2c->setsdamode(false);
   bool ack = !i2c->getsda();
   i2c->setsdamode(true);
