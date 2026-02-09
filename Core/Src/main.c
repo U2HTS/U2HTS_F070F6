@@ -126,14 +126,21 @@ int main(void)
 #endif
   /* USER CODE BEGIN 2 */
   u2hts_config cfg = {.controller = "auto",
-                      .x_invert = false,
-                      .y_invert = false,
-                      .x_y_swap = false,
+                      .coord_config =
+                          {
+                              .x_invert = false,
+                              .y_invert = false,
+                              .x_y_swap = false,
+                          },
                       .bus_type = UB_I2C,
-                      .spi_cpol = 0xFF, // unspecified
-                      .spi_cpha = 0xFF, // unspecified
+                      .spi_config =
+                          {
+                              .cpha = 0xFF, // unspecified
+                              .cpol = 0xFF, // unspecified
+                          },
                       .report_delay = 0,
-                      .polling_mode = false};
+                      .polling_mode = false,
+                      .custom_controller_config = ""};
 
   U2HTS_ERROR_CODES ret = u2hts_init(&cfg);
   if (ret)

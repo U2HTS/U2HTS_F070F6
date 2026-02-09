@@ -7,14 +7,13 @@
 
 #include <stdbool.h>
 
+#include "gpio_i2c.h"
 #include "main.h"
 #include "u2hts_core.h"
 #include "usb_device.h"
 #include "usbd_customhid.h"
-#include "gpio_i2c.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
-
 inline static bool getscl() {
   return HAL_GPIO_ReadPin(TP_SCL_GPIO_Port, TP_SCL_Pin);
 }
@@ -43,14 +42,15 @@ inline static void setsdamode(bool mode) {
 }
 
 static gpio_i2c i2c = {.delay = 5,
-                .delay_us = u2hts_delay_us,
-                .getscl = getscl,
-                .getsda = getsda,
-                .setscl = setscl,
-                .setsda = setsda,
-                .setsdamode = setsdamode};
+                       .delay_us = u2hts_delay_us,
+                       .getscl = getscl,
+                       .getsda = getsda,
+                       .setscl = setscl,
+                       .setsda = setsda,
+                       .setsdamode = setsdamode};
 
-inline bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len, bool stop) {
+inline bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len,
+                            bool stop) {
   return gpio_i2c_write(&i2c, slave_addr, buf, len, stop);
 }
 
@@ -107,7 +107,8 @@ inline void u2hts_led_set(bool on) {
   HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
 }
 
-#define U2HTS_CONFIG_STORAGE_OFFSET FLASH_BANK1_END - FLASH_PAGE_SIZE + 1 // 0x08007C00UL
+#define U2HTS_CONFIG_STORAGE_OFFSET \
+  FLASH_BANK1_END - FLASH_PAGE_SIZE + 1  // 0x08007C00UL
 
 inline void u2hts_write_config(uint16_t cfg) {
   HAL_FLASH_Unlock();
@@ -157,7 +158,8 @@ inline void u2hts_ts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(uint8_t report_id, const u2hts_hid_report* report) {
+inline void u2hts_usb_report(uint8_t report_id,
+                             const u2hts_hid_report* report) {
   static uint8_t report_buf[sizeof(u2hts_hid_report) + 1];
   report_buf[0] = report_id;
   memcpy(report_buf + 1, report, sizeof(u2hts_hid_report));
