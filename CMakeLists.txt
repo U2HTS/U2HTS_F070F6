@@ -98,7 +98,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
     # Add user defined libraries
     u2hts_core
-    u2hts_core_settings
 )
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.hex)
