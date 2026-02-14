@@ -133,11 +133,6 @@ int main(void)
                               .x_y_swap = false,
                           },
                       .bus_type = UB_I2C,
-                      .spi_config =
-                          {
-                              .cpha = 0xFF, // unspecified
-                              .cpol = 0xFF, // unspecified
-                          },
                       .report_delay = 0,
                       .polling_mode = false,
                       .custom_controller_config = ""};

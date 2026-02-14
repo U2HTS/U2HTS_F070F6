@@ -66,7 +66,7 @@ inline bool u2hts_i2c_detect_slave(uint8_t addr) {
 inline void u2hts_i2c_init(uint32_t bus_speed) { UNUSED(bus_speed); }
 inline void u2hts_i2c_set_speed(uint32_t speed_hz) { UNUSED(speed_hz); }
 // not implemented
-inline void u2hts_spi_init(bool cpol, bool cpha, uint32_t speed) {}
+inline void u2hts_spi_init(u2hts_spi_config *config) {}
 inline bool u2hts_spi_transfer(void* buf, size_t len) { return false; }
 
 inline void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
