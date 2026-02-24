@@ -88,338 +88,103 @@
   */
 
 /** Usb HID report descriptor. */
-__ALIGN_BEGIN static const uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = 
+#ifdef U2HTS_ENABLE_COMPACT_REPORT
+#define U2HTS_HID_TP    \
+    0x09 ,0x22,         \
+    0xA1 ,0x02,         \
+    0x09 ,0x42,         \
+    0x25 ,0x01,         \
+    0x75 ,0x01,         \
+    0x95 ,0x01,         \
+    0x81 ,0x02,         \
+    0x09 ,0x51,         \
+    0x75 ,0x07,         \
+    0x81 ,0x02,         \
+    0x05 ,0x01,         \
+    0x26 ,0xFF, 0x0F,   \
+    0x75 ,0x0C,         \
+    0x09 ,0x30,         \
+    0x46 ,0xFF, 0x0F,   \
+    0x81 ,0x02,         \
+    0x46 ,0xFF, 0x0F,   \
+    0x09 ,0x31,         \
+    0x81 ,0x02,         \
+    0x05 ,0x0D,         \
+    0xC0
+#else
+#define U2HTS_HID_TP  \
+    0x09, 0x22,       \
+    0xA1, 0x02,       \
+    0x09, 0x42,       \
+    0x25, 0x01,       \
+    0x75, 0x01,       \
+    0x95, 0x01,       \
+    0x81, 0x02,       \
+    0x09, 0x51,       \
+    0x75, 0x07,       \
+    0x81, 0x02,       \
+    0x05, 0x01,       \
+    0x26, 0x00, 0x10, \
+    0x75, 0x10,       \
+    0x09, 0x30,       \
+    0x46, 0x00, 0x10, \
+    0x81, 0x02,       \
+    0x46, 0x00, 0x10, \
+    0x09, 0x31,       \
+    0x81, 0x02,       \
+    0x05, 0x0D,       \
+    0x26, 0xFF, 0x00, \
+    0x46, 0xFF, 0x00, \
+    0x75, 0x08,       \
+    0x95, 0x03,       \
+    0x09, 0x48,       \
+    0x09, 0x49,       \
+    0x09, 0x30,       \
+    0x81, 0x02,       \
+    0xC0
+#endif
+__ALIGN_BEGIN static const uint8_t CUSTOM_HID_ReportDesc_FS[] __ALIGN_END = 
     {
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x09, 0x04,                    // (LOCAL)  USAGE              0x000D0004 Touch Screen (Application Collection)
-      0xA1, 0x01,                    // (MAIN)   COLLECTION         0x01 Application (Usage=0x000D0004: Page=Digitizer Page, Usage=Touch Screen, Type=Application Collection)
-      0x85, U2HTS_HID_REPORT_TP_ID,                    // (GLOBAL) REPORT_ID          0x01 (1)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0x35, 0x00,                    // (GLOBAL) PHYSICAL_MINIMUM   0x00 (0)  <-- Info: Consider replacing 35 00 with 34
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0)  <-- Info: Consider replacing 15 00 with 14
-      0x55, 0x0E,                    // (GLOBAL) UNIT_EXPONENT      0x0E (Unit Value x 10⁻²)
-      0x65, 0x11,                    // (GLOBAL) UNIT               0x11 Distance in metres [1 cm units] (1=System=SI Linear, 1=Length=Centimetre)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap  <-- Error: PHYSICAL_MAXIMUM is undefined
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap  <-- Error: PHYSICAL_MAXIMUM is undefined
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x09, 0x22,                    // (LOCAL)  USAGE              0x000D0022 Finger (Logical Collection)
-      0xA1, 0x02,                    // (MAIN)   COLLECTION         0x02 Logical (Usage=0x000D0022: Page=Digitizer Page, Usage=Finger, Type=Logical Collection)
-      0x09, 0x42,                    // (LOCAL)  USAGE              0x000D0042 Tip Switch (Momentary Control)
-      0x25, 0x01,                    // (GLOBAL) LOGICAL_MAXIMUM    0x01 (1)
-      0x15, 0x00,                    // (GLOBAL) LOGICAL_MINIMUM    0x00 (0) <-- Redundant: LOGICAL_MINIMUM is already 0 <-- Info: Consider replacing 15 00 with 14
-      0x75, 0x01,                    // (GLOBAL) REPORT_SIZE        0x01 (1) Number of bits per field
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 1 bit) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x51,                    // (LOCAL)  USAGE              0x000D0051 Contact Identifier (Dynamic Value)
-      0x75, 0x07,                    // (GLOBAL) REPORT_SIZE        0x07 (7) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 7 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x01,                    // (GLOBAL) USAGE_PAGE         0x0001 Generic Desktop Page
-      0x26, 0x00, 0x10,              // (GLOBAL) LOGICAL_MAXIMUM    0x1000 (4096)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x00010030 X (Dynamic Value)
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x46, 0x00, 0x10,              // (GLOBAL) PHYSICAL_MAXIMUM   0x1000 (4096) <-- Redundant: PHYSICAL_MAXIMUM is already 4096
-      0x09, 0x31,                    // (LOCAL)  USAGE              0x00010031 Y (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         0x000D Digitizer Page
-      0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)
-      0x46, 0xFF, 0x00,              // (GLOBAL) PHYSICAL_MAXIMUM   0x00FF (255)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x95, 0x03,                    // (GLOBAL) REPORT_COUNT       0x03 (3) Number of fields
-      0x09, 0x48,                    // (LOCAL)  USAGE              0x000D0048 Width (Dynamic Value)
-      0x09, 0x49,                    // (LOCAL)  USAGE              0x000D0049 Height (Dynamic Value)
-      0x09, 0x30,                    // (LOCAL)  USAGE              0x000D0030 Tip Pressure (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (3 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0xC0,                          // (MAIN)   END_COLLECTION     Logical  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00000011,EXP=-2)
-      0x27, 0xFF, 0xFF, 0x00, 0x00,  // (GLOBAL) LOGICAL_MAXIMUM    0x0000FFFF (65535)
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        0x10 (16) Number of bits per field
-      0x55, 0x0C,                    // (GLOBAL) UNIT_EXPONENT      0x0C (Unit Value x 10⁻⁴)
-      0x66, 0x01, 0x10,              // (GLOBAL) UNIT               0x1001 Time in seconds [1 s units] (1=System=SI Linear, 1=Time=Seconds)
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       0x01 (1) Number of fields
-      0x09, 0x56,                    // (LOCAL)  USAGE              0x000D0056 Scan Time (Dynamic Value)
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 16 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x09, 0x54,                    // (LOCAL)  USAGE              0x000D0054 Contact Count (Dynamic Value)
-      0x25, 0x0A,                    // (GLOBAL) LOGICAL_MAXIMUM    0x0A (10)
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        0x08 (8) Number of bits per field
-      0x81, 0x02,                    // (MAIN)   INPUT              0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x85, U2HTS_HID_REPORT_TP_MAX_COUNT_ID,                    // (GLOBAL) REPORT_ID          0x02 (2)
-      0x09, 0x55,                    // (LOCAL)  USAGE              0x000D0055 Contact Count Maximum (Static Value)
-      0xB1, 0x02,                    // (MAIN)   FEATURE            0x00000002 (1 field x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap
-      0x85, U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID,                    //   (GLOBAL) REPORT_ID          0x03 (3)  
-      0x06, 0x00, 0xFF,              //   (GLOBAL) USAGE_PAGE         0xFF, 0x00 Vendor-defined 
-      0x09, 0xC5,                    //   (LOCAL)  USAGE              0xFF, 0x0000C5 <-- Warning: Undocumented usage (document it by inserting 00C5 into file FF00.conf)
-      0x26, 0xFF, 0x00,              //   (GLOBAL) LOGICAL_MAXIMUM    0x00FF (255)  
-      0x97, 0x00, 0x01, 0x00, 0x00,  //   (GLOBAL) REPORT_COUNT       0x00000100 (256) Number of fields  <-- Info: Consider replacing 97 00010000 with 96 0001
-      0xB1, 0x02,                    //   (MAIN)   FEATURE            0x00000002 (256 fields x 8 bits) 0=Data 1=Variable 0=Absolute 0=NoWrap 0=Linear 0=PrefState 0=NoNull 0=NonVolatile 0=Bitmap 
-      0xC0,                          // (MAIN)   END_COLLECTION     Application  <-- Warning: Physical units are still in effect PHYSICAL(MIN=0,MAX=255) UNIT(0x00001001,EXP=-4)
+      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         
+      0x09, 0x04,                    // (LOCAL)  USAGE              
+      0xA1, 0x01,                    // (MAIN)   COLLECTION         
+      0x85, U2HTS_HID_REPORT_TP_ID,  // (GLOBAL) REPORT_ID          
+      0x09, 0x22,                    // (LOCAL)  USAGE              
+      0x34,                    // (GLOBAL) PHYSICAL_MINIMUM   
+      0x14,                    // (GLOBAL) LOGICAL_MINIMUM    
+      0x55, 0x0E,                    // (GLOBAL) UNIT_EXPONENT      
+      0x65, 0x11,                    // (GLOBAL) UNIT               
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      U2HTS_HID_TP,
+      0x27, 0xFF, 0xFF, 0x00, 0x00,  // (GLOBAL) LOGICAL_MAXIMUM    
+      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        
+      0x55, 0x0C,                    // (GLOBAL) UNIT_EXPONENT      
+      0x66, 0x01, 0x10,              // (GLOBAL) UNIT               
+      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       
+      0x09, 0x56,                    // (LOCAL)  USAGE              
+      0x81, 0x02,                    // (MAIN)   INPUT              
+      0x09, 0x54,                    // (LOCAL)  USAGE              
+      0x25, 0x0A,                    // (GLOBAL) LOGICAL_MAXIMUM    
+      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        
+      0x81, 0x02,                    // (MAIN)   INPUT              
+      0x85, U2HTS_HID_REPORT_TP_MAX_COUNT_ID, // (GLOBAL) REPORT_ID          
+      0x09, 0x55,                    // (LOCAL)  USAGE              
+      0xB1, 0x02,                    // (MAIN)   FEATURE            
+      0x85, U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID, //   (GLOBAL) REPORT_ID
+      0x06, 0x00, 0xFF,              //   (GLOBAL) USAGE_PAGE     
+      0x09, 0xC5,                    //   (LOCAL)  USAGE          
+      0x26, 0xFF, 0x00,              //   (GLOBAL) LOGICAL_MAXIMUM
+      0x96, 0x00, 0x01,              //   (GLOBAL) REPORT_COUNT   
+      0xB1, 0x02,                    //   (MAIN)   FEATURE
+      0xC0,                          // (MAIN)   END_COLLECTION
 };
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */

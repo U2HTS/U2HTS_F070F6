@@ -58,6 +58,11 @@ target_compile_definitions(u2hts_core_settings INTERFACE
     U2HTS_ENABLE_PERSISTENT_CONFIG
     U2HTS_ENABLE_KEY
     U2HTS_CONFIG_TIMEOUT=3000
+    # U2HTS_ENABLE_COMPACT_REPORT
+)
+
+target_compile_definitions(stm32cubemx INTERFACE 
+    # U2HTS_ENABLE_COMPACT_REPORT
 )
 
 # Link directories setup
