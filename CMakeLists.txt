@@ -54,6 +54,7 @@ add_library(u2hts_core_settings INTERFACE)
 target_compile_definitions(u2hts_core_settings INTERFACE
     U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
     $<$<BOOL:${U2HTS_F070F6_SWCLK_AS_UART}>:U2HTS_F070F6_SWCLK_AS_UART>
+    U2HTS_MAX_TPS=10
     U2HTS_ENABLE_LED
     U2HTS_ENABLE_PERSISTENT_CONFIG
     U2HTS_ENABLE_KEY
@@ -63,6 +64,7 @@ target_compile_definitions(u2hts_core_settings INTERFACE
 
 target_compile_definitions(stm32cubemx INTERFACE 
     # U2HTS_ENABLE_COMPACT_REPORT
+    U2HTS_MAX_TPS=10
 )
 
 # Link directories setup
