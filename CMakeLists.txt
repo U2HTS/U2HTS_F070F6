@@ -85,6 +85,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/rmi_common.c
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/rmi_f11.c
     ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/cst8xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/chsc6540.c
+    ${CMAKE_CURRENT_LIST_DIR}/u2hts_touch_controllers/goodix_normandy.c
 )
 
 # Add include paths
