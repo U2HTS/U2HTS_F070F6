@@ -89,102 +89,102 @@
 
 /** Usb HID report descriptor. */
 #ifdef U2HTS_ENABLE_COMPACT_REPORT
-#define U2HTS_HID_TP    \
-    0x09 ,0x22,         \
-    0xA1 ,0x02,         \
-    0x09 ,0x42,         \
-    0x25 ,0x01,         \
-    0x75 ,0x01,         \
-    0x95 ,0x01,         \
-    0x81 ,0x02,         \
-    0x09 ,0x51,         \
-    0x75 ,0x07,         \
-    0x81 ,0x02,         \
-    0x05 ,0x01,         \
-    0x26 ,0xFF, 0x0F,   \
-    0x75 ,0x0C,         \
-    0x09 ,0x30,         \
-    0x46 ,0xFF, 0x0F,   \
-    0x81 ,0x02,         \
-    0x46 ,0xFF, 0x0F,   \
-    0x09 ,0x31,         \
-    0x81 ,0x02,         \
-    0x05 ,0x0D,         \
-    0xC0
+#define U2HTS_HID_TP                                                           \
+      0x09, 0x22, /* (LOCAL)  USAGE              Touch Point */            \
+      0xA1, 0x02, /* (MAIN)   COLLECTION         Logical */                    \
+      0x09, 0x42, /* (LOCAL)  USAGE              Tip Switch */                 \
+      0x25, 0x01, /* (GLOBAL) LOGICAL_MAXIMUM    1 */                          \
+      0x75, 0x01, /* (GLOBAL) REPORT_SIZE        1 bit */                      \
+      0x95, 0x01, /* (GLOBAL) REPORT_COUNT       1 */                          \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x09, 0x51, /* (LOCAL)  USAGE              Contact Identifier */         \
+      0x75, 0x07, /* (GLOBAL) REPORT_SIZE        7 bits */                     \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x05, 0x01, /* (GLOBAL) USAGE_PAGE         Generic Desktop */            \
+      0x26, 0xFF, 0x0F, /* (GLOBAL) LOGICAL_MAXIMUM    4095 */                 \
+      0x75, 0x0C,       /* (GLOBAL) REPORT_SIZE        12 bits */              \
+      0x09, 0x30,       /* (LOCAL)  USAGE              X */                    \
+      0x46, 0xFF, 0x0F, /* (GLOBAL) PHYSICAL_MAXIMUM   4095 */                 \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x46, 0xFF, 0x0F, /* (GLOBAL) PHYSICAL_MAXIMUM   4095 */                 \
+      0x09, 0x31,       /* (LOCAL)  USAGE              Y */                    \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x05, 0x0D, /* (GLOBAL) USAGE_PAGE         Digitizers */                 \
+      0xC0        /* (MAIN)   END_COLLECTION */
 #else
-#define U2HTS_HID_TP  \
-    0x09, 0x22,       \
-    0xA1, 0x02,       \
-    0x09, 0x42,       \
-    0x25, 0x01,       \
-    0x75, 0x01,       \
-    0x95, 0x01,       \
-    0x81, 0x02,       \
-    0x09, 0x51,       \
-    0x75, 0x07,       \
-    0x81, 0x02,       \
-    0x05, 0x01,       \
-    0x26, 0x00, 0x10, \
-    0x75, 0x10,       \
-    0x09, 0x30,       \
-    0x46, 0x00, 0x10, \
-    0x81, 0x02,       \
-    0x46, 0x00, 0x10, \
-    0x09, 0x31,       \
-    0x81, 0x02,       \
-    0x05, 0x0D,       \
-    0x26, 0xFF, 0x00, \
-    0x46, 0xFF, 0x00, \
-    0x75, 0x08,       \
-    0x95, 0x03,       \
-    0x09, 0x48,       \
-    0x09, 0x49,       \
-    0x09, 0x30,       \
-    0x81, 0x02,       \
-    0xC0
+#define U2HTS_HID_TP                                                           \
+      0x09, 0x22, /* (LOCAL)  USAGE              Touch Point */                \
+      0xA1, 0x02, /* (MAIN)   COLLECTION         Logical */                    \
+      0x09, 0x42, /* (LOCAL)  USAGE              Tip Switch */                 \
+      0x25, 0x01, /* (GLOBAL) LOGICAL_MAXIMUM    1 */                          \
+      0x75, 0x01, /* (GLOBAL) REPORT_SIZE        1 bit */                      \
+      0x95, 0x01, /* (GLOBAL) REPORT_COUNT       1 */                          \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x09, 0x51, /* (LOCAL)  USAGE              Contact Identifier */         \
+      0x75, 0x07, /* (GLOBAL) REPORT_SIZE        7 bits */                     \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x05, 0x01, /* (GLOBAL) USAGE_PAGE         Generic Desktop */            \
+      0x26, 0xFF, 0x0F, /* (GLOBAL) LOGICAL_MAXIMUM    4095 */                 \
+      0x75, 0x10,       /* (GLOBAL) REPORT_SIZE        16 bits */              \
+      0x09, 0x30,       /* (LOCAL)  USAGE              X */                    \
+      0x46, 0xFF, 0x0F, /* (GLOBAL) PHYSICAL_MAXIMUM   4095 */                 \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x46, 0xFF, 0x0F, /* (GLOBAL) PHYSICAL_MAXIMUM   4095 */                 \
+      0x09, 0x31,       /* (LOCAL)  USAGE              Y */                    \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0x05, 0x0D, /* (GLOBAL) USAGE_PAGE         Digitizers */                 \
+      0x26, 0xFF, 0x00, /* (GLOBAL) LOGICAL_MAXIMUM    255 */                  \
+      0x46, 0xFF, 0x00, /* (GLOBAL) PHYSICAL_MAXIMUM   255 */                  \
+      0x75, 0x08,       /* (GLOBAL) REPORT_SIZE        8 bits */               \
+      0x95, 0x03,       /* (GLOBAL) REPORT_COUNT       3 */                    \
+      0x09, 0x48,       /* (LOCAL)  USAGE              Width */                \
+      0x09, 0x49,       /* (LOCAL)  USAGE              Height */               \
+      0x09, 0x30,       /* (LOCAL)  USAGE              Tip Pressure */         \
+      0x81, 0x02, /* (MAIN)   INPUT              (Data, Variable, Absolute) */ \
+      0xC0        /* (MAIN)   END_COLLECTION */
 #endif
 __ALIGN_BEGIN static const uint8_t CUSTOM_HID_ReportDesc_FS[] __ALIGN_END = 
-    {
-      0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         
-      0x09, 0x04,                    // (LOCAL)  USAGE              
-      0xA1, 0x01,                    // (MAIN)   COLLECTION         
-      0x85, U2HTS_HID_REPORT_TP_ID,  // (GLOBAL) REPORT_ID          
-      0x09, 0x22,                    // (LOCAL)  USAGE              
-      0x34,                    // (GLOBAL) PHYSICAL_MINIMUM   
-      0x14,                    // (GLOBAL) LOGICAL_MINIMUM    
-      0x55, 0x0E,                    // (GLOBAL) UNIT_EXPONENT      
-      0x65, 0x11,                    // (GLOBAL) UNIT               
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      U2HTS_HID_TP,
-      0x27, 0xFF, 0xFF, 0x00, 0x00,  // (GLOBAL) LOGICAL_MAXIMUM    
-      0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        
-      0x55, 0x0C,                    // (GLOBAL) UNIT_EXPONENT      
-      0x66, 0x01, 0x10,              // (GLOBAL) UNIT               
-      0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       
-      0x09, 0x56,                    // (LOCAL)  USAGE              
-      0x81, 0x02,                    // (MAIN)   INPUT              
-      0x09, 0x54,                    // (LOCAL)  USAGE              
-      0x25, 0x0A,                    // (GLOBAL) LOGICAL_MAXIMUM    
-      0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        
-      0x81, 0x02,                    // (MAIN)   INPUT              
-      0x85, U2HTS_HID_REPORT_TP_MAX_COUNT_ID, // (GLOBAL) REPORT_ID          
-      0x09, 0x55,                    // (LOCAL)  USAGE              
-      0xB1, 0x02,                    // (MAIN)   FEATURE            
-      0x85, U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID, //   (GLOBAL) REPORT_ID
-      0x06, 0x00, 0xFF,              //   (GLOBAL) USAGE_PAGE     
-      0x09, 0xC5,                    //   (LOCAL)  USAGE          
-      0x26, 0xFF, 0x00,              //   (GLOBAL) LOGICAL_MAXIMUM
-      0x96, 0x00, 0x01,              //   (GLOBAL) REPORT_COUNT   
-      0xB1, 0x02,                    //   (MAIN)   FEATURE
-      0xC0,                          // (MAIN)   END_COLLECTION
+  {
+    0x05, 0x0D,                    // (GLOBAL) USAGE_PAGE         Digitizers
+    0x09, 0x04,                    // (LOCAL)  USAGE              Touch Screen
+    0xA1, 0x01,                    // (MAIN)   COLLECTION         Application
+    0x85, U2HTS_HID_REPORT_TP_ID,  // (GLOBAL) REPORT_ID
+    0x09, 0x22,                    // (LOCAL)  USAGE              Touch Point
+    0x34,                          // (GLOBAL) PHYSICAL_MINIMUM   0
+    0x14,                          // (GLOBAL) LOGICAL_MINIMUM    0
+    0x55, 0x0E,                    // (GLOBAL) UNIT_EXPONENT      -2
+    0x65, 0x11,                    // (GLOBAL) UNIT               SI Linear (Centimeter)
+    U2HTS_HID_TP,                  // Touch Point 1
+    U2HTS_HID_TP,                  // Touch Point 2
+    U2HTS_HID_TP,                  // Touch Point 3
+    U2HTS_HID_TP,                  // Touch Point 4
+    U2HTS_HID_TP,                  // Touch Point 5
+    U2HTS_HID_TP,                  // Touch Point 6
+    U2HTS_HID_TP,                  // Touch Point 7
+    U2HTS_HID_TP,                  // Touch Point 8
+    U2HTS_HID_TP,                  // Touch Point 9
+    U2HTS_HID_TP,                  // Touch Point 10
+    0x27, 0xFF, 0xFF, 0x00, 0x00,  // (GLOBAL) LOGICAL_MAXIMUM    65535
+    0x75, 0x10,                    // (GLOBAL) REPORT_SIZE        16 bits
+    0x55, 0x0C,                    // (GLOBAL) UNIT_EXPONENT      -4
+    0x66, 0x01, 0x10,              // (GLOBAL) UNIT               SI Linear (Seconds)
+    0x95, 0x01,                    // (GLOBAL) REPORT_COUNT       1
+    0x09, 0x56,                    // (LOCAL)  USAGE              Scan Time
+    0x81, 0x02,                    // (MAIN)   INPUT              (Data, Variable, Absolute)
+    0x09, 0x54,                    // (LOCAL)  USAGE              Contact Count
+    0x25, U2HTS_MAX_TPS,           // (GLOBAL) LOGICAL_MAXIMUM
+    0x75, 0x08,                    // (GLOBAL) REPORT_SIZE        8 bits
+    0x81, 0x02,                    // (MAIN)   INPUT              (Data, Variable, Absolute)
+    0x85, U2HTS_HID_REPORT_TP_MAX_COUNT_ID, // (GLOBAL) REPORT_ID
+    0x09, 0x55,                    // (LOCAL)  USAGE              Contact Count Maximum
+    0xB1, 0x02,                    // (MAIN)   FEATURE            (Data, Variable, Absolute)
+    0x85, U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID, // (GLOBAL) REPORT_ID
+    0x06, 0x00, 0xFF,              // (GLOBAL) USAGE_PAGE         Vendor Defined
+    0x09, 0xC5,                    // (LOCAL)  USAGE              Vendor Usage 0xC5 (THQA Cert)
+    0x26, 0xFF, 0x00,              // (GLOBAL) LOGICAL_MAXIMUM    255
+    0x96, 0x00, 0x01,              // (GLOBAL) REPORT_COUNT       256
+    0xB1, 0x02,                    // (MAIN)   FEATURE            (Data, Variable, Absolute)
+    0xC0                           // (MAIN)   END_COLLECTION
 };
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
