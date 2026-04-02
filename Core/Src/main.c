@@ -135,7 +135,7 @@ int main(void)
                       .bus_type = UB_I2C,
                       .report_delay = 0,
                       .polling_mode = false,
-                      .custom_controller_config = ""};
+                      .custom_controller_config = NULL};
 
   U2HTS_ERROR_CODES ret = u2hts_init(&cfg);
   if (ret)

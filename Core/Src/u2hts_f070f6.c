@@ -96,9 +96,8 @@ inline void u2hts_tprst_set(bool value) {
   HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, value);
 }
 
-inline bool u2hts_usb_init() {
+inline void u2hts_usb_init() {
   MX_USB_DEVICE_Init();
-  return true;
 }
 inline uint16_t u2hts_get_timestamp() { return (uint16_t)HAL_GetTick(); }
 
@@ -108,7 +107,7 @@ inline void u2hts_led_set(bool on) {
 }
 
 #define U2HTS_CONFIG_STORAGE_OFFSET \
-  FLASH_BANK1_END - FLASH_PAGE_SIZE + 1  // 0x08007C00UL
+  (FLASH_BANK1_END - FLASH_PAGE_SIZE + 1)  // 0x08007C00UL
 
 inline void u2hts_write_config(uint16_t cfg) {
   HAL_FLASH_Unlock();
