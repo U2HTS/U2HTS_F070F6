@@ -39,7 +39,7 @@ add_subdirectory(cmake/stm32cubemx)
 
 # Disable logging to save memory
 set(U2HTS_F070F6_SWCLK_AS_UART OFF)
-# See u2hts_core/u2hts_core.h line 16 for log levels
+# See u2hts_core/u2hts_core.h for log levels
 set(U2HTS_LOG_LEVEL -1)
 
 if(NOT U2HTS_F070F6_SWCLK_AS_UART)

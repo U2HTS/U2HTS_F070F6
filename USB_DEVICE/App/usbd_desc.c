@@ -22,7 +22,7 @@
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_conf.h"
-
+#include "u2hts_core.h"
 /* USER CODE BEGIN INCLUDE */
 
 /* USER CODE END INCLUDE */
@@ -62,11 +62,11 @@
   * @{
   */
 
-#define USBD_VID     0x483
+#define USBD_VID     0x0483
 #define USBD_LANGID_STRING     1033
-#define USBD_MANUFACTURER_STRING     "U2HTS"
-#define USBD_PID_FS     0x8572
-#define USBD_PRODUCT_STRING_FS     "USB to HID Touchscreen"
+// #define USBD_MANUFACTURER_STRING     "U2HTS"
+// #define USBD_PID_FS     0x8572
+// #define USBD_PRODUCT_STRING_FS     "USB to HID Touchscreen"
 #define USBD_CONFIGURATION_STRING_FS     "Custom HID Config"
 #define USBD_INTERFACE_STRING_FS     "Custom HID Interface"
 
@@ -156,8 +156,8 @@ __ALIGN_BEGIN const uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
   USB_MAX_EP0_SIZE,           /*bMaxPacketSize*/
   LOBYTE(USBD_VID),           /*idVendor*/
   HIBYTE(USBD_VID),           /*idVendor*/
-  LOBYTE(USBD_PID_FS),        /*idProduct*/
-  HIBYTE(USBD_PID_FS),        /*idProduct*/
+  LOBYTE(U2HTS_USB_PID),      /*idProduct*/
+  HIBYTE(U2HTS_USB_PID),      /*idProduct*/
   0x00,                       /*bcdDevice rel. 2.00*/
   0x02,
   USBD_IDX_MFC_STR,           /*Index of manufacturer  string*/
@@ -249,11 +249,11 @@ uint8_t * USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
 {
   if(speed == 0)
   {
-    USBD_GetString((uint8_t *)USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);
+    USBD_GetString((uint8_t *)U2HTS_PROD_STR, USBD_StrDesc, length);
   }
   else
   {
-    USBD_GetString((uint8_t *)USBD_PRODUCT_STRING_FS, USBD_StrDesc, length);
+    USBD_GetString((uint8_t *)U2HTS_PROD_STR, USBD_StrDesc, length);
   }
   return USBD_StrDesc;
 }
@@ -267,7 +267,7 @@ uint8_t * USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length
 uint8_t * USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
 {
   UNUSED(speed);
-  USBD_GetString((uint8_t *)USBD_MANUFACTURER_STRING, USBD_StrDesc, length);
+  USBD_GetString((uint8_t *)U2HTS_MANU_STR, USBD_StrDesc, length);
   return USBD_StrDesc;
 }
 
