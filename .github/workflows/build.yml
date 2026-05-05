@@ -10,15 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Prepare build environment
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
+    
     - name: Fetch code
       uses: actions/checkout@v6
       with:
         submodules: recursive
-    
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y gcc-arm-none-eabi libnewlib-dev libnewlib-arm-none-eabi ninja-build cmake
     
     - name: Build firmware
       run: |
