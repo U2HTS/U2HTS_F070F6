@@ -2,7 +2,17 @@ name: build firmware
 
 on:
   push:
-  pull_request:
+    paths-ignore: 
+      - ".gitignore"
+      - "PCB"
+      - ".clang-format"
+      - ".mxproject"
+      - "LICENSE"
+      - "README.md"
+      - "README_zh.md"
+      - "U2HTS_F070F6.ioc"
+      - "erase.sh"
+      - "flash.sh"
   workflow_dispatch:
 
 jobs:
