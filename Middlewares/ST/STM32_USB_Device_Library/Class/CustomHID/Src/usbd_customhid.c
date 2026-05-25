@@ -354,7 +354,7 @@ static uint8_t  USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef *pdev,
                 break;
               case U2HTS_HID_REPORT_TP_MS_THQA_CERT_ID:
                 UNUSED(0);
-                const uint8_t dummy_thqa_cert[] = {U2HTS_HID_REPORT_TP_MS_THQA_CERT};
+                const uint8_t dummy_thqa_cert[] = {U2HTS_MS_THQA_CERT};
                 USBD_CtlSendData(pdev, (uint8_t*)dummy_thqa_cert,
                                  sizeof(dummy_thqa_cert));
                 break;

@@ -49,22 +49,21 @@ if(NOT U2HTS_F070F6_SWCLK_AS_UART)
 endif()
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
+# 10 Touch points
+u2hts_generate_hid_report_descriptor(10)
 
-add_library(u2hts_core_settings INTERFACE)
 target_compile_definitions(u2hts_core_settings INTERFACE
     U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
     $<$<BOOL:${U2HTS_F070F6_SWCLK_AS_UART}>:U2HTS_F070F6_SWCLK_AS_UART>
-    U2HTS_MAX_TPS=10
     U2HTS_ENABLE_LED
     U2HTS_ENABLE_PERSISTENT_CONFIG
     U2HTS_ENABLE_KEY
     U2HTS_CONFIG_TIMEOUT=3000
-    # U2HTS_ENABLE_COMPACT_REPORT
+    U2HTS_ENABLE_COMPACT_REPORT
 )
 
-target_compile_definitions(stm32cubemx INTERFACE 
-    # U2HTS_ENABLE_COMPACT_REPORT
-    U2HTS_MAX_TPS=10
+target_link_libraries(stm32cubemx INTERFACE
+    u2hts_core_settings
 )
 
 # Link directories setup

@@ -143,6 +143,7 @@ int main(void)
 #ifdef U2HTS_ENABLE_LED
       u2hts_led_show_error_code(ret);
 #endif
+  ;
   /* USER CODE END 2 */
 
   /* Infinite loop */
