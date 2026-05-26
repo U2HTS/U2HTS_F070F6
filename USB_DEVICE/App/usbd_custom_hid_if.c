@@ -20,6 +20,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_custom_hid_if.h"
+
+#include "u2hts_core.h"
+
 #include "u2hts_report_descriptor.h"
 /* USER CODE BEGIN INCLUDE */
 

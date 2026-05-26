@@ -49,8 +49,6 @@ if(NOT U2HTS_F070F6_SWCLK_AS_UART)
 endif()
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
-# 10 Touch points
-u2hts_generate_hid_report_descriptor(10)
 
 target_compile_definitions(u2hts_core_settings INTERFACE
     U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
