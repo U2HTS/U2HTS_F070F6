@@ -23,7 +23,7 @@
 
 #include "u2hts_core.h"
 
-#include "u2hts_report_descriptor.h"
+#include "u2hts_hid_report_descriptor.h"
 /* USER CODE BEGIN INCLUDE */
 
 /* USER CODE END INCLUDE */

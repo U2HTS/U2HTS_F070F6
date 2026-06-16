@@ -46,7 +46,7 @@ EndBSPDependencies */
 #include "usbd_customhid.h"
 #include "usbd_ctlreq.h"
 #include "u2hts_core.h"
-#include "u2hts_report_descriptor.h"
+#include "u2hts_hid_report_descriptor.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
