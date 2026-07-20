@@ -31,7 +31,7 @@ sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 [main.c](./Core/Src/main.c#L128)
 
 # Debug
-`SWCLK` can be reconfigured as UART TX to print logs by adjusting related options in [CMakeLists.txt](./CMakeLists.txt#L40):
+`SWCLK` can be reconfigured as UART TX to print logs by adjusting following options in [CMakeLists.txt](./CMakeLists.txt#L40):
 ```cmake
 # Turn on log print via UART2_TX
 set(U2HTS_F070F6_SWCLK_AS_UART ON)

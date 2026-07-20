@@ -50,9 +50,8 @@ endif()
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
 
-target_compile_definitions(u2hts_core_settings INTERFACE
+target_compile_definitions(u2hts_core_config INTERFACE
     U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
-    $<$<BOOL:${U2HTS_F070F6_SWCLK_AS_UART}>:U2HTS_F070F6_SWCLK_AS_UART>
     U2HTS_ENABLE_LED
     U2HTS_ENABLE_PERSISTENT_CONFIG
     U2HTS_ENABLE_KEY
@@ -61,7 +60,7 @@ target_compile_definitions(u2hts_core_settings INTERFACE
 )
 
 target_link_libraries(stm32cubemx INTERFACE
-    u2hts_core_settings
+    u2hts_core_config
 )
 
 # Link directories setup
@@ -93,6 +92,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+    $<$<BOOL:${U2HTS_F070F6_SWCLK_AS_UART}>:U2HTS_F070F6_SWCLK_AS_UART>
     # Add user defined symbols
 )
 

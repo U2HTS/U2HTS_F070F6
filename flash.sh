@@ -1,5 +1,5 @@
 #!/bin/bash
-[ -z $1 ] || [ -z $2 ] && echo "Usage: $0 <swd/dfu> [firmware.elf]" && exit 1
+[ -z $1 ] || [ -z $2 ] && echo "Usage: $0 <swd/dfu> [firmware.elf|bin]" && exit 1
 
 case $1 in
 dfu)

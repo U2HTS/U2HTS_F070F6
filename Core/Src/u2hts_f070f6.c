@@ -101,11 +101,14 @@ inline void u2hts_usb_init() {
 }
 inline uint16_t u2hts_get_timestamp() { return (uint16_t)HAL_GetTick(); }
 
+#ifdef U2HTS_ENABLE_LED
 inline void u2hts_led_set(bool on) {
   // low level is on
   HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
 }
+#endif
 
+#ifdef U2HTS_ENABLE_PERSISTENT_CONFIG
 #define U2HTS_CONFIG_STORAGE_OFFSET \
   (FLASH_BANK1_END - FLASH_PAGE_SIZE + 1)  // 0x08007C00UL
 
@@ -124,16 +127,19 @@ inline void u2hts_write_config(uint16_t cfg) {
 inline uint16_t u2hts_read_config() {
   return *(uint16_t*)U2HTS_CONFIG_STORAGE_OFFSET;
 }
+#endif
 
 inline void u2hts_ts_irq_set(bool enable) {
   enable ? HAL_NVIC_EnableIRQ(TP_INT_EXTI_IRQn)
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
 
+#ifdef U2HTS_ENABLE_KEY
 inline bool u2hts_usrkey_get() {
   // default low
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }
+#endif
 
 inline void u2hts_ts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
