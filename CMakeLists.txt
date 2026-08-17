@@ -39,29 +39,8 @@ add_subdirectory(cmake/stm32cubemx)
 
 # Disable logging to save memory
 set(U2HTS_F070F6_SWCLK_AS_UART OFF)
-# See u2hts_core/u2hts_core.h for log levels
-set(U2HTS_LOG_LEVEL -1)
-
-if(NOT U2HTS_F070F6_SWCLK_AS_UART)
-    if(NOT U2HTS_LOG_LEVEL EQUAL -1)
-        message(FATAL_ERROR "Set U2HTS_LOG_LEVEL > -1 requires set U2HTS_F070F6_SWCLK_AS_UART to ON!")
-    endif()
-endif()
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/u2hts_core)
-
-target_compile_definitions(u2hts_core_config INTERFACE
-    U2HTS_LOG_LEVEL=${U2HTS_LOG_LEVEL}
-    U2HTS_ENABLE_LED
-    U2HTS_ENABLE_PERSISTENT_CONFIG
-    U2HTS_ENABLE_KEY
-    U2HTS_CONFIG_TIMEOUT=3000
-    U2HTS_ENABLE_COMPACT_REPORT
-)
-
-target_link_libraries(stm32cubemx INTERFACE
-    u2hts_core_config
-)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE

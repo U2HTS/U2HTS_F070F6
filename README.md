@@ -17,8 +17,9 @@ cd U2HTS_F070F6
 cmake --preset MinSizeRel
 cmake --build build/MinSizeRel
 ```
+LED, persistent storage and key are enabled via [CMakePresets.json](./CMakePresets.json).  
 *Note*: This MCU has small memories (6 KB RAM / 32 KB Flash), so you would like to disable unused drivers to save memory.  
-[CMakeLists.txt](./CMakeLists.txt#L74)
+[CMakeLists.txt](./CMakeLists.txt#L57)
 
 # Flash
 Press `USR button` while power on the board.
@@ -31,9 +32,8 @@ sudo ./flash.sh dfu build/MinSizeRel/U2HTS_F070F6.bin
 [main.c](./Core/Src/main.c#L128)
 
 # Debug
-`SWCLK` can be reconfigured as UART TX to print logs by adjusting following options in [CMakeLists.txt](./CMakeLists.txt#L40):
-```cmake
+`SWCLK` can be reconfigured as UART TX to print logs by following cmake command:
+```shell
 # Turn on log print via UART2_TX
-set(U2HTS_F070F6_SWCLK_AS_UART ON)
-set(U2HTS_LOG_LEVEL U2HTS_LOG_LEVEL_DEBUG)
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=cmake/gcc-arm-none-eabi.cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DU2HTS_LOG_LEVEL=U2HTS_LOG_LEVEL_INFO -DU2HTS_F070F6_SWCLK_AS_UART=ON
 ```

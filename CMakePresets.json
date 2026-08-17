@@ -14,14 +14,22 @@
             "name": "RelWithDebInfo",
             "inherits": "default",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "U2HTS_ENABLE_LED": true,
+                "U2HTS_ENABLE_PERSISTENT_CONFIG": true,
+                "U2HTS_ENABLE_KEY": true,
+                "U2HTS_LOG_LEVEL": "-1"
             }
         },
         {
             "name": "MinSizeRel",
             "inherits": "default",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "MinSizeRel"
+                "CMAKE_BUILD_TYPE": "MinSizeRel",
+                "U2HTS_ENABLE_LED": true,
+                "U2HTS_ENABLE_PERSISTENT_CONFIG": true,
+                "U2HTS_ENABLE_KEY": true,
+                "U2HTS_LOG_LEVEL": "-1"
             }
         }
     ],
