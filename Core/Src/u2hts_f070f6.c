@@ -128,7 +128,7 @@ inline uint16_t u2hts_read_config() {
 }
 #endif
 
-inline void u2hts_ts_irq_set(bool enable) {
+inline void u2hts_irq_set(bool enable) {
   enable ? HAL_NVIC_EnableIRQ(TP_INT_EXTI_IRQn)
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
@@ -140,7 +140,7 @@ inline bool u2hts_usrkey_get() {
 }
 #endif
 
-inline void u2hts_ts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
+inline void u2hts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
   uint32_t real_irq_flag = 0x00;
   switch (irq_flag) {
@@ -162,7 +162,7 @@ inline void u2hts_ts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_report(const u2hts_hid_report* report) {
+inline void u2hts_usb_hid_report(const u2hts_hid_report* report) {
   USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report, sizeof(u2hts_hid_report));
 }
 
@@ -184,5 +184,5 @@ inline bool u2hts_tpint_get() {
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  u2hts_ts_irq_status_set((GPIO_Pin == TP_INT_Pin));
+  if((GPIO_Pin == TP_INT_Pin)) u2hts_irq_handler();
 }
