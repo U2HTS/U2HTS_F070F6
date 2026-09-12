@@ -34,20 +34,20 @@ jobs:
     - name: Build firmware
       run: |
         cmake --preset MinSizeRel
-        cmake --build build/MinSizeRel
+        cmake --build build
     
     - name: Upload firmware
       uses: actions/upload-artifact@v7
       with:
         name: ${{ github.event.repository.name }}-${{ github.run_id }}
         path: |
-          build/MinSizeRel/U2HTS_F070F6.hex
-          build/MinSizeRel/U2HTS_F070F6.bin
+          build/U2HTS_F070F6.hex
+          build/U2HTS_F070F6.bin
     
     - name: Publish release
       uses: softprops/action-gh-release@v3
       if: github.ref_type == 'tag'
       with:
         files: |
-          build/MinSizeRel/U2HTS_F070F6.hex
-          build/MinSizeRel/U2HTS_F070F6.bin
+          build/U2HTS_F070F6.hex
+          build/U2HTS_F070F6.bin
