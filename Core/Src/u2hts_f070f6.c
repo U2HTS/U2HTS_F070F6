@@ -13,23 +13,23 @@
 #include "usbd_customhid.h"
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
-inline static bool getscl() {
+static bool getscl() {
   return HAL_GPIO_ReadPin(TP_SCL_GPIO_Port, TP_SCL_Pin);
 }
 
-inline static bool getsda() {
+static bool getsda() {
   return HAL_GPIO_ReadPin(TP_SDA_GPIO_Port, TP_SDA_Pin);
 }
 
-inline static void setsda(bool state) {
+static void setsda(bool state) {
   HAL_GPIO_WritePin(TP_SDA_GPIO_Port, TP_SDA_Pin, state);
 }
 
-inline static void setscl(bool state) {
+static void setscl(bool state) {
   HAL_GPIO_WritePin(TP_SCL_GPIO_Port, TP_SCL_Pin, state);
 }
 
-inline static void setsdamode(bool mode) {
+static void setsdamode(bool mode) {
 #if 0
   GPIO_InitTypeDef gpio = {.Mode = mode ? GPIO_MODE_OUTPUT_OD :
   GPIO_MODE_INPUT,
@@ -48,28 +48,28 @@ static gpio_i2c i2c = {.delay = 5,
                        .setsda = setsda,
                        .setsdamode = setsdamode};
 
-inline bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len,
+bool u2hts_i2c_write(uint8_t slave_addr, void* buf, size_t len,
                             bool stop) {
   return gpio_i2c_write(&i2c, slave_addr, buf, len, stop);
 }
 
-inline bool u2hts_i2c_read(uint8_t slave_addr, void* buf, size_t len) {
+bool u2hts_i2c_read(uint8_t slave_addr, void* buf, size_t len) {
   return gpio_i2c_read(&i2c, slave_addr, buf, len);
 }
 
-inline bool u2hts_i2c_detect_slave(uint8_t addr) {
+bool u2hts_i2c_detect_slave(uint8_t addr) {
   return gpio_i2c_detect_slave(&i2c, addr);
 }
 
 // gpio bitbanging i2c
-inline void u2hts_i2c_init(uint32_t bus_speed) { UNUSED(bus_speed); }
-inline void u2hts_i2c_set_speed(uint32_t speed_hz) { UNUSED(speed_hz); }
+void u2hts_i2c_init(uint32_t bus_speed) { UNUSED(bus_speed); }
+void u2hts_i2c_set_speed(uint32_t speed_hz) { UNUSED(speed_hz); }
 // not implemented
-inline void u2hts_spi_init(u2hts_spi_config *config) {}
-inline bool u2hts_spi_transfer(void* buf, size_t len) { return false; }
+void u2hts_spi_init(u2hts_spi_config *config) {}
+bool u2hts_spi_transfer(void* buf, size_t len) { return false; }
 
-inline void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
-inline void u2hts_delay_us(uint32_t us) {
+void u2hts_delay_ms(uint32_t ms) { HAL_Delay(ms); }
+void u2hts_delay_us(uint32_t us) {
   __IO uint32_t currentTicks = SysTick->VAL;
   /* Number of ticks per millisecond */
   const uint32_t tickPerMs = SysTick->LOAD + 1;
@@ -87,21 +87,21 @@ inline void u2hts_delay_us(uint32_t us) {
   } while (nbTicks > elapsedTicks);
 }
 
-inline void u2hts_tpint_set(bool value) {
+void u2hts_tpint_set(bool value) {
   HAL_GPIO_WritePin(TP_INT_GPIO_Port, TP_INT_Pin, value);
 }
 
-inline void u2hts_tprst_set(bool value) {
+void u2hts_tprst_set(bool value) {
   HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, value);
 }
 
-inline void u2hts_usb_init() {
+void u2hts_usb_init() {
   MX_USB_DEVICE_Init();
 }
-inline uint16_t u2hts_get_timestamp() { return (uint16_t)HAL_GetTick(); }
+uint16_t u2hts_get_timestamp() { return (uint16_t)HAL_GetTick(); }
 
 #ifdef U2HTS_ENABLE_LED
-inline void u2hts_led_set(bool on) {
+void u2hts_led_set(bool on) {
   // low level is on
   HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, !on);
 }
@@ -111,7 +111,7 @@ inline void u2hts_led_set(bool on) {
 #define U2HTS_CONFIG_STORAGE_OFFSET \
   (FLASH_BANK1_END - FLASH_PAGE_SIZE + 1)  // 0x08007C00UL
 
-inline void u2hts_write_config(uint16_t cfg) {
+void u2hts_write_config(uint16_t cfg) {
   HAL_FLASH_Unlock();
   uint32_t e = 0;
   FLASH_EraseInitTypeDef erase = {.NbPages = 1,
@@ -123,24 +123,24 @@ inline void u2hts_write_config(uint16_t cfg) {
   HAL_FLASH_Lock();
 }
 
-inline uint16_t u2hts_read_config() {
+uint16_t u2hts_read_config() {
   return *(uint16_t*)U2HTS_CONFIG_STORAGE_OFFSET;
 }
 #endif
 
-inline void u2hts_irq_set(bool enable) {
+void u2hts_irq_set(bool enable) {
   enable ? HAL_NVIC_EnableIRQ(TP_INT_EXTI_IRQn)
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
 
 #ifdef U2HTS_ENABLE_KEY
-inline bool u2hts_usrkey_get() {
+bool u2hts_usrkey_get() {
   // default low
   return HAL_GPIO_ReadPin(USR_KEY_GPIO_Port, USR_KEY_Pin);
 }
 #endif
 
-inline void u2hts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
+void u2hts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
   uint32_t real_irq_flag = 0x00;
   switch (irq_flag) {
@@ -162,16 +162,16 @@ inline void u2hts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline void u2hts_usb_hid_report(const u2hts_hid_report* report) {
+void u2hts_usb_hid_report(const u2hts_hid_report* report) {
   USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)report, sizeof(u2hts_hid_report));
 }
 
-inline bool u2hts_get_usb_status() {
+bool u2hts_get_usb_status() {
   return (((USBD_CUSTOM_HID_HandleTypeDef*)hUsbDeviceFS.pClassData)->state ==
           CUSTOM_HID_IDLE);
 }
 
-inline void u2hts_tpint_set_mode(bool mode, bool pull) {
+void u2hts_tpint_set_mode(bool mode, bool pull) {
   GPIO_InitTypeDef gpio = {.Pin = TP_INT_Pin,
                            .Mode = mode ? GPIO_MODE_OUTPUT_PP : GPIO_MODE_INPUT,
                            .Pull = pull ? GPIO_PULLUP : GPIO_PULLDOWN,
@@ -179,7 +179,7 @@ inline void u2hts_tpint_set_mode(bool mode, bool pull) {
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
 }
 
-inline bool u2hts_tpint_get() {
+bool u2hts_tpint_get() {
   return HAL_GPIO_ReadPin(TP_INT_GPIO_Port, TP_INT_Pin);
 }
 
