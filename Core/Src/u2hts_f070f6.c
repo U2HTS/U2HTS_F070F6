@@ -140,7 +140,7 @@ bool u2hts_usrkey_get() {
 }
 #endif
 
-void u2hts_int_init(U2HTS_INT_FLAG int_flag) {
+void u2hts_int_init(U2HTS_INT_FLAGS int_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
   uint32_t real_int_flag = 0x00;
   switch (int_flag) {
