@@ -125,7 +125,7 @@ int main(void)
   MX_SPI1_Init();
 #endif
   /* USER CODE BEGIN 2 */
-  u2hts_config cfg = {.controller = "auto",
+  const u2hts_config cfg = {.controller = "auto",
                       .coord_config =
                           {
                               .x_invert = false,
@@ -141,7 +141,6 @@ int main(void)
   if (ret)
     while (1)
       u2hts_led_show_error_code(ret);
-  ;
   /* USER CODE END 2 */
 
   /* Infinite loop */

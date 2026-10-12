@@ -128,7 +128,7 @@ uint16_t u2hts_read_config() {
 }
 #endif
 
-void u2hts_irq_set(bool enable) {
+void u2hts_int_set(bool enable) {
   enable ? HAL_NVIC_EnableIRQ(TP_INT_EXTI_IRQn)
          : HAL_NVIC_DisableIRQ(TP_INT_EXTI_IRQn);
 }
@@ -140,23 +140,23 @@ bool u2hts_usrkey_get() {
 }
 #endif
 
-void u2hts_irq_init(U2HTS_IRQ_TYPES irq_flag) {
+void u2hts_int_init(U2HTS_INT_FLAG int_flag) {
   HAL_GPIO_DeInit(TP_INT_GPIO_Port, TP_INT_Pin);
-  uint32_t real_irq_flag = 0x00;
-  switch (irq_flag) {
-    case IRQ_TYPE_EDGE_RISING:
-    case IRQ_TYPE_LEVEL_HIGH:
-      real_irq_flag = GPIO_MODE_IT_RISING;
+  uint32_t real_int_flag = 0x00;
+  switch (int_flag) {
+    case INT_FLAG_EDGE_RISING:
+    case INT_FLAG_LEVEL_HIGH:
+      real_int_flag = GPIO_MODE_IT_RISING;
       break;
-    case IRQ_TYPE_EDGE_FALLING:
-    case IRQ_TYPE_LEVEL_LOW:
+    case INT_FLAG_EDGE_FALLING:
+    case INT_FLAG_LEVEL_LOW:
     default:
-      real_irq_flag = GPIO_MODE_IT_FALLING;
+      real_int_flag = GPIO_MODE_IT_FALLING;
       break;
   }
-  GPIO_InitTypeDef gpio = {.Mode = real_irq_flag,
+  GPIO_InitTypeDef gpio = {.Mode = real_int_flag,
                            .Pin = TP_INT_Pin,
-                           .Pull = (real_irq_flag == GPIO_MODE_IT_RISING)
+                           .Pull = (real_int_flag == GPIO_MODE_IT_RISING)
                                        ? GPIO_PULLDOWN
                                        : GPIO_PULLUP};
   HAL_GPIO_Init(TP_INT_GPIO_Port, &gpio);
@@ -184,5 +184,5 @@ bool u2hts_tpint_get() {
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if((GPIO_Pin == TP_INT_Pin)) u2hts_irq_handler();
+  if((GPIO_Pin == TP_INT_Pin)) u2hts_int_handler();
 }
